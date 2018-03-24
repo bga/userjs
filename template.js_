@@ -1,0 +1,35 @@
+// ==UserScript==
+// @include        _http://someurl.com
+// ==/UserScript==
+
+opera.addEventListener('BeforeExternalScript', function(js) {
+  // opera.postError(js.element)
+  js.preventDefault()
+}, false)
+
+opera.addEventListener('BeforeScript', function(js) {
+  // opera.postError(js.element)
+  js.preventDefault()
+}, false)
+
+!(function(global) {
+  var waitCommon = function(fn) {
+    if(global.Bga) {
+      fn()
+    }
+    else {
+      setTimeout(function() {
+        waitCommon(fn)
+      }, 0)
+    }
+  }
+  
+  waitCommon(function() {
+    with(Bga) {
+      opera.postError("here")
+      onDOMReady(function() {
+        
+      })
+    }
+  })
+})(this)
