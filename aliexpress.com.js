@@ -29,10 +29,8 @@ opera.addEventListener('BeforeScript', function(js) {
   
   waitCommon(function() {
     with(Bga) {
-      //disableAllScripts()
+      var log = 1 ? logRaw : logNull
       //log("aliexpress")
-      //var log = function() {  }
-      //# fix volume
       
       onDOMReady(function() {
         var multiLanguageSwitch = document.getElementsByClassName("multi-language-switch")[0]
