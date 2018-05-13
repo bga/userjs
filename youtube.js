@@ -50,8 +50,8 @@ opera.addEventListener('BeforeScript', function(js) {
   }
   
   waitCommon(function() {
-    //# var log = function() {  }
     with(Bga) {
+      var log = 1 ? logRaw : logNull
       //# fix volume
       0 && setTimeout(function() {
         try {

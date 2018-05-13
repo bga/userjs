@@ -57,10 +57,10 @@
         
         var main = function() {
           //# simplified gallery
-          if(document.getElementsByClassName("item-view-gallery")[0] != null) {
+          if(document.getElementsByClassName("js-gallery-imgs-container")[0] != null) {
             var newGallery = document.createDocumentFragment()
-            document.getElementsByClassName("gallery-extended-img-frame").each(function(v) {
-              newGallery.appendChild(de("".concat("<a href='", v.getAttribute("data-url"), "'><img src='", v.getAttribute("data-alt-url"), "'></a>")))
+            document.getElementsByClassName("js-gallery-img-frame").each(function(v) {
+              newGallery.appendChild(de("".concat("<a href='", v.getAttribute("data-url"), "'><img src='", v.getAttribute("data-url"), "'></a>")))
             })
             
             document.getElementsByClassName("item-view-gallery")[0].innerHTML = ""

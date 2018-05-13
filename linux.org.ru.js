@@ -6,6 +6,17 @@
 // @description 
 // ==/UserScript==
 
+opera.addEventListener('BeforeExternalScript', function(js) {
+  // opera.postError(js.element)
+  js.preventDefault()
+}, false)
+
+opera.addEventListener('BeforeScript', function(js) {
+  // opera.postError(js.element)
+  js.preventDefault()
+}, false)
+
+
 //# annoyng [#comment]
 if(location.hash == "#comments") {
   //# set "#" instead, jumps to top
@@ -27,7 +38,6 @@ if(location.hash == "#comments") {
   
   waitCommon(function() {
     with(Bga) {
-      disableAllScripts()
       // disable logging
       var opera = { postError: function() {  } }
       

@@ -28,9 +28,9 @@ opera.addEventListener('BeforeScript', function(js) {
   
   waitCommon(function() {
     with(Bga) {
+      var log = 0 ? logRaw : logNull
       //disableAllScripts()
       log("funkysouls")
-      //var log = function() {  }
       //# fix volume
       
       onDOMReady(function() {

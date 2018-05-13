@@ -31,8 +31,8 @@
   }
   
   waitCommon(function() {
-    var log = function() {  }
     with(Bga) {
+      var log = 0 ? logRaw : logNull
       opera.postError("here")
       0 && onDOMReady(function() {
 

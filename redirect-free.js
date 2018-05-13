@@ -23,9 +23,9 @@
   
   
   waitCommon(function() {
-    var log = function() {  }
     with(Bga) {
       onDOMReady(function() {
+        var log = 1 ? logRaw : logNull
         var as = document.links
         var a, i = -1
         

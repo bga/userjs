@@ -4,6 +4,16 @@
 // @description    expand links
 // ==/UserScript==
 
+opera.addEventListener('BeforeExternalScript', function(js) {
+  // opera.postError(js.element)
+  js.preventDefault()
+}, false)
+
+opera.addEventListener('BeforeScript', function(js) {
+  // opera.postError(js.element)
+  js.preventDefault()
+}, false)
+
 !(function(global) {
   var waitCommon = function(fn) {
     if(global.Bga) {
@@ -18,8 +28,8 @@
   
   waitCommon(function() {
     with(Bga) {
-      disableAllScripts()
       onDOMReady(function() {
+        var log = 1 ? logRaw : logNull
         //# pagination
         if(0) {
           var nextHref = document.body.getElementsByClassName("w-button-more")[0].getElementsByTagName("a")[0].href
