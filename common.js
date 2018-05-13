@@ -78,7 +78,8 @@
     }
   }
   
-  Bga.log = function() {
+  Bga.logNull = function() {  }
+  Bga.logRaw = function() {
     if(window.opera) {
       opera.postError([].join.call(arguments, " "))
     }
@@ -97,6 +98,29 @@
         return ret
     }
   }
+  
+  Array.prototype.put = function(v) {
+    if(this.indexOf(v) == -1) {
+      this.push(v)
+    }
+    else {
+      
+    }
+    return this
+  }
+
+  Array.prototype.remove = function(v) {
+    var k = this.indexOf(v)
+    if(k != -1) {
+      this.splice(k, 1)
+    }
+    else {
+      
+    }
+    return this
+  }
+  
+  
   /*
   Array.prototype.filter = function(_fn) { var thi$ = this;
     var ret = []
@@ -169,6 +193,19 @@
   Node.prototype.delClass = function(className) { var thi$ = this
     if(thi$.hasClass(className)) {
       thi$.className = (" " + thi$.className + " ").replace(" " + className + " ", " ")
+    }
+  }
+  Node.prototype.toggleClass = function(className) { var thi$ = this
+    if(thi$.hasClass(className)) {
+      thi$.className = (" " + thi$.className + " ").replace(" " + className + " ", " ")
+    }
+    else {
+      if(thi$.className.length > 0) {
+        thi$.className += " " + className
+      }
+      else {
+        thi$.className = className
+      }
     }
   }
   Node.prototype.up = function(className) { var thi$ = this
@@ -280,6 +317,73 @@
   }
   Bga.skip = function() {
     throw new Bga.SkipError()
+  }
+  
+  Bga.buildAndAttachHandleEvent = function(domNode, obj) {
+    var eventNames = []; for(var name in obj) if(true || obj.hasOwnProperty(name)) {
+      var m = name.split(/\s/)
+      //# { "on .ok-button click" }
+      if(m[0] == "on") {
+        eventNames.push({
+          className: m[1], 
+          type: m[2]
+        })
+      }
+      else {
+        
+      }
+    } 
+    obj.handleEvent = function(event) { var p = obj //# weirdly in Opera { this == window } :/
+      var className = event.target.className
+      if(className.length != 0) {
+        className.split(" ").forEach(function(className){
+          var eventName = "".concat("on .", className, " ", event.type) 
+          if(eventName in p) {
+            p[eventName](event, className)
+          }
+          else {
+          }
+        })
+      }
+      else {
+        
+      }
+    }
+    
+    //# [https://stackoverflow.com/a/14438954]
+    function onlyUnique(value, index, self) { 
+      return self.indexOf(value) === index;
+    }
+    
+    eventNames.map(function(name) { return name.type }).filter(onlyUnique).forEach(function(type) {
+      domNode.addEventListener(type, obj, false)
+    })
+    
+    //# memory cleanup
+    eventNames = null
+  }
+    
+  if(0) {
+    var TableWidget = function(domNode) {
+      // generates { this.handleEvent } and calls { domNode.addEventListener(type, this, false) } each event type
+      Bga.buildAndAttachHandleEvent(domNode, this)
+    }
+    TableWidget.prototype["on .tr click"] = function(event, className) {
+      
+    } 
+    TableWidget.prototype.onTdClick = function(event, className) {
+      
+    } 
+    TableWidget.prototype.onThClick = function(event, className) {
+      
+    }
+  }
+  if(0) {
+    Bga.buildAndAttachHandleEvent(document.documentElement, {
+      "on .ok click": function() {
+        
+      }
+    })
   }
   
   if(0) Object.prototype.inspect = function() {
