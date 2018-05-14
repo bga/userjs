@@ -52,6 +52,7 @@
     
     waitCommon(function() {
       with(Bga) {
+        var log = 1 ? logRaw : logNull
         if(0) log("Bga")
         if(0) var log = function() {  }
         
