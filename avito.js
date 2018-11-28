@@ -9,10 +9,12 @@
 ;(function(global, undefined) {
   var yes = !0, no = !1
   
+  //# avito profile with original js
   if(location.pathname.match(/^(\/additem|\/items|\/profile)/) != null) {
     //# inside account - do nothing
   }
   else if(location.hash != "") {
+    //# reload page with original js to allow user see phone or write message to seller
     window.addEventListener("load", function() {
       switch(location.hash) {
         case("#showPhone"): {
@@ -28,7 +30,7 @@
     }, no)
   }
   else {
-    //# it should be common' { disableAllScripts() } but { Bga } is accessable too late to block all vendor scripts
+    //# disable original js
     opera.addEventListener('BeforeExternalScript', function(js) {
       //? opera.postError(js.element)
       js.preventDefault()
@@ -57,6 +59,15 @@
         if(0) var log = function() {  }
         
         var main = function() {
+          
+          //# remove new js custom select box
+          try {
+            document.getElementsByClassName("search-form__change-location").each(function(v) { v.remove() })
+          }
+          catch(e) {
+            
+          }
+          
           //# simplified gallery
           if(document.getElementsByClassName("js-gallery-imgs-container")[0] != null) {
             var newGallery = document.createDocumentFragment()
