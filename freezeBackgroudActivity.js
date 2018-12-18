@@ -35,7 +35,7 @@
     return patchedFn
   }
 
-  if(1) (function() {
+  if(0) (function() {
     var x = "".bold.toString() 
     var y = "".bold.toString.toString() 
     String.prototype.bold = natify(function() {
