@@ -8,7 +8,7 @@
 //# because modern websites do alot of backgroud "useful" job (hope its not mining *coins) and keep cpu busy, fan periodically blows and thats annoyong especially at night
 !(function(global) {
   var log = function() {
-    if(0) console.log.apply(console, arguments)
+    if(1) console.log.apply(console, arguments)
   }
   var trackActivity = function(msg) {
     if(1) console.log.apply(console, arguments)
@@ -16,7 +16,7 @@
   
   var yes = !0, no = !1
   var CAPTURE_PHASE = yes
-  var DEEP = true
+  var CLONE_NODE_DEEP = true
   //# assime setTimeout/setInterval ids get increments and share one counter
   //# get last id
   
@@ -49,9 +49,9 @@
     //# etc
   })()
   
-  ;if(1) (function() {
+  ;if(0) (function() {
     var log = function() {
-      if(1) console.log.apply(console, arguments)
+      if(0) console.log.apply(console, arguments)
     }
     
     // opera has some issue with DOMContentLoaded
@@ -97,7 +97,7 @@
         document.head.appendChild(scriptDomNode)
         */
         var oldNode = v.node
-        oldNode.parentNode.insertBefore(oldNode.cloneNode(DEEP), oldNode)
+        oldNode.parentNode.insertBefore(oldNode.cloneNode(CLONE_NODE_DEEP), oldNode)
         oldNode.parentNode.removeChild(oldNode)
       }
     }, CAPTURE_PHASE)
@@ -126,7 +126,7 @@
   })()
 
   
-  var nextThreadId = (function() {
+  if(0) var nextThreadId = (function() {
     var lastId = setTimeout("")
     
     return function() {
@@ -134,88 +134,73 @@
     }
   })()
   
-  global.setTimeout = (function() {
-    var hookedFn = global.setTimeout
+  if(1) (function() {
+    var CANCEL_TIMEOUT_ID = null
     var queue = []
     
-    window.addEventListener("focus", function(e) {
-      var v = null
-      while(v = queue.shift()) {
-        log("setTimeout unfreeze", v.args.join("\t"))
-        hookedFn.apply(global, v.args)
-      }
-    }, CAPTURE_PHASE)
+    var nativeClearTimeout = Window.prototype.clearTimeout
+    var nativeSetTimeout = Window.prototype.setTimeout
     
-    return natify(function() {
+    Window.prototype.clearTimeout = natify(function(id) {
+      var i = -1; while(queue[++i] != null) {
+        if(queue[i].id == id) {
+          queue[i].id = CANCEL_TIMEOUT_ID
+        }
+        else {
+          
+        }
+      }
+      return nativeClearTimeout.apply(this, arguments)
+    }, nativeClearTimeout)
+
+    Window.prototype.setTimeout = natify(function(threadFn, timeout) {
       //# tab is active => pass as is
-      if(document.hidden == no) {
+      if(document.hidden == no || timeout == 0) {
         log("setTimeout pass")
-        return hookedFn.apply(global, arguments)
+        return nativeSetTimeout.apply(this, arguments)
       }
       // tab inactive, push to queue and execute when tab get focused again
       else {
         log("setTimeout freeze")
-        queue.push({ args: Array.prototype.slice.call(arguments) })
-        return nextThreadId();
+        //# get real id
+        var id = nativeSetTimeout.apply(this, ["", 0])
+        queue.push({ id: id, self: this, args: Array.prototype.slice.call(arguments) })
+        return id
       }
-    }, hookedFn)
+    }, nativeSetTimeout)
+    
+    window.addEventListener("focus", function(e) {
+      var v = null; while(v = queue.shift()) {
+        log("setTimeout unfreeze", v.args.join("\t"))
+        if(v.id == CANCEL_TIMEOUT_ID) {
+          
+        }
+        else {
+          nativeSetTimeout.apply(v.self, v.args)
+        }
+      }
+    }, CAPTURE_PHASE)
+    
   })()
 
-  global.setInterval = (function() {
-    var hookedFn = global.setInterval
-    var queue = []
+  Window.prototype.setInterval = (function() {
+    var hookedFn = Window.prototype.setInterval
     
-    window.addEventListener("focus", function(e) {
-      var v = null
-      while(v = queue.shift()) {
-        log("setInterval unfreeze", v.args.join("\t"))
-        hookedFn.apply(global, v.args)
-      }
-    }, CAPTURE_PHASE)
-    
-    return natify(function() {
-      //# tab is active => pass as is
-      if(document.hidden == no) {
-        log("setInterval pass")
-        return hookedFn.apply(global, arguments)
-      }
-      // tab inactive, push to queue and execute when tab get focused again
-      else {
-        log("setInterval freeze")
-        queue.push({ args: Array.prototype.slice.call(arguments) })
-        return nextThreadId();
-      }
+    return natify(function(threadFn, intervalMs) {
+      //? { natify }
+      return hookedFn.apply(this, [function() {
+        if(document.hidden) {
+        }
+        else {
+          //? or call via { setTimeout(threadFn, 0) }
+          try { threadFn.apply(this, arguments) } catch(err) {  }
+        }
+      }, intervalMs])
     }, hookedFn)
   })()
   
-  if(global.setImmediate != null) global.setImmediate = (function() {
-    var hookedFn = global.setImmediate
-    var queue = []
-    
-    window.addEventListener("focus", function(e) {
-      var v = null
-      while(v = queue.shift()) {
-        log("setImmediate unfreeze", v.args.join("\t"))
-        hookedFn.apply(global, v.args)
-      }
-    }, CAPTURE_PHASE)
-    
-    return natify(function() {
-      //# tab is active => pass as is
-      if(document.hidden == no) {
-        log("setImmediate pass")
-        return hookedFn.apply(global, arguments)
-      }
-      // tab inactive, push to queue and execute when tab get focused again
-      else {
-        log("setImmediatel freeze")
-        queue.push({ args: Array.prototype.slice.call(arguments) })
-        return nextThreadId();
-      }
-    }, hookedFn)
-  })()
   
-  if(Window.prototype.postMessage != null) Window.prototype.postMessage = (function() {
+  if(0) if(Window.prototype.postMessage != null) Window.prototype.postMessage = (function() {
     var log = function() {
       if(1) console.log.apply(console, arguments)
     }
