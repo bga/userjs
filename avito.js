@@ -117,10 +117,10 @@
           
           
           //# show 1st image of slider photos
-          document.getElementsByClassName("item-slider").each(function(sliderDom) {
-            sliderDom.className = "photo-wrapper js-photo-wrapper large-picture"
-            var firstImage = sliderDom.getElementsByClassName("item-slider-image")[0]
-            var photoUrl = firstImage.getAttribute("data-srcpath") || firstImage.style.backgroundImage.replace(/^url\(\"?([\s\S]+)\"?\)$/, "$1") 
+          if(1) document.getElementsByClassName("item-slider").each(function(sliderDom) {
+            if(0) sliderDom.className = "photo-wrapper js-photo-wrapper large-picture"
+            var firstImage = sliderDom.getElementsByClassName("item-slider-image")[0].getElementsByTagName("IMG")[0]
+            var photoUrl = firstImage.getAttribute("src") 
             sliderDom.innerHTML = ""
             sliderDom.appendChild(de("".concat('<img src="', photoUrl, '" class="photo-count-show large-picture" alt="">')))
           })
