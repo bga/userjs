@@ -4,6 +4,8 @@
 
 (function(global, undefined) {
   var console = { log: function() {  } }
+  
+  //# antitracking
   var blockJsHandlers = function(e) {
     console.log(e.target)
     if(e.target.nodeName == "A") {
@@ -17,4 +19,5 @@
   }
   document.addEventListener("mousedown", blockJsHandlers, true)
   document.addEventListener("click", blockJsHandlers, true)
+
 })((1, eval)("this"))
