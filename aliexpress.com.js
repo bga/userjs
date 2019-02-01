@@ -33,6 +33,7 @@ opera.addEventListener('BeforeScript', function(js) {
       //log("aliexpress")
       
       onDOMReady(function() {
+        //# adds "Short Url" garbage free link near "Show in english"
         var multiLanguageSwitch = document.getElementsByClassName("multi-language-switch")[0]
         if(multiLanguageSwitch != null) {
           var shortUrl = "".concat(location.protocol, "//", [].concat(["www"], location.host.split(".").slice(1)).join("."), location.pathname)
