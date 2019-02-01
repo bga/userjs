@@ -1,6 +1,6 @@
 // ==UserScript==
 // @include        http://forum.funkysouls.com/*
-// @name youtube embed -> anchor
+// @name 
 // @author Bga
 // @include        http://forum.funkysouls.com/*
 // @version 0.1
@@ -34,16 +34,20 @@ opera.addEventListener('BeforeScript', function(js) {
       //# fix volume
       
       onDOMReady(function() {
-        var toYoutubeAnchor = function(vId) {
-          var vHref = "http://www.youtube.com/watch?v=" + vId
-          return de("".concat("<a href='", vHref, "'>", vHref, "</a>"))
+        
+        //# replace youtube iframes to links
+        if(1) {
+          var toYoutubeAnchor = function(vId) {
+            var vHref = "http://www.youtube.com/watch?v=" + vId
+            return de("".concat("<a href='", vHref, "'>", vHref, "</a>"))
+          }
+          document.getElementsByTagName("iframe").each(function(v) {
+            v.replace(toYoutubeAnchor(v.src.match(/\/embed\/([\w\-]+)/i)[1]))
+          })
+          document.getElementsByTagName("object").each(function(v) {
+            v.replace(toYoutubeAnchor(v.getElementsByTagName("embed")[0].src.match(/\/v\/([\w\-]+)/i)[1]))
+          })
         }
-        document.getElementsByTagName("iframe").each(function(v) {
-          v.replace(toYoutubeAnchor(v.src.match(/\/embed\/([\w\-]+)/i)[1]))
-        })
-        document.getElementsByTagName("object").each(function(v) {
-          v.replace(toYoutubeAnchor(v.getElementsByTagName("embed")[0].src.match(/\/v\/([\w\-]+)/i)[1]))
-        })
       })
     }
   })
