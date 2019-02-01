@@ -6,6 +6,19 @@
 // @description 
 // ==/UserScript==
 
+//# disable external scripts
+opera.addEventListener('BeforeExternalScript', function(js) {
+  // opera.postError(js.element)
+  js.preventDefault()
+}, false)
+
+//# dont disable inline scripts because it "prints" forum content
+0 && opera.addEventListener('BeforeScript', function(js) {
+  // opera.postError(js.element)
+  js.preventDefault()
+}, false)
+
+//# [forum.ixbt.com] now encodes posts in js code. We provide shim
 ;(function(undefined) {
 
 window.t_top1 = function() {
@@ -45,18 +58,6 @@ window.t_bottom2 = function() {
 }
 
 
-opera.addEventListener('BeforeExternalScript', function(js) {
-  // opera.postError(js.element)
-  js.preventDefault()
-}, false)
-
-// opera.addEventListener('BeforeScript', function(js) {
-  // js.preventDefault()
-  // if(js.element.text.indexOf("\\u003cembed") < 0 && js.element.text.indexOf("yt.playerConfig =") < 0) {
-  // }
-// }, false)
-
-
 !(function(global) {
   var waitCommon = function(fn) {
     if(global.Bga) {
@@ -79,6 +80,7 @@ opera.addEventListener('BeforeExternalScript', function(js) {
     }
   })
 })(this)  
+
 
 })()
 
