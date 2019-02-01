@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           mysku redirect free
 // @include        https://mysku.ru/*
-// @description    decode links
+// @description    
 // ==/UserScript==
 
 opera.addEventListener('BeforeExternalScript', function(js) {
@@ -30,6 +30,8 @@ opera.addEventListener('BeforeScript', function(js) {
     with(Bga) {
       onDOMReady(function() {
         var log = 1 ? logRaw : logNull
+        
+        //# All shop links are referral free
         document.getElementsByTagName("A").each(function(a) {
           var hrefMatch = a.href.match(/^http(s?)\:\/\/go(\.mysku\.ru|\.promostack\.ru)\/\?(.*)$/)
           if(hrefMatch != null) {
@@ -40,6 +42,8 @@ opera.addEventListener('BeforeScript', function(js) {
             
           }
         })
+        
+        //# All images are clickable
         document.getElementsByTagName("IMG").each(function(img) {
           if(100 <= img.offsetWidth && 100 <= img.offsetHeight) {
             img.wrap(de("".concat('<a href="', img.src, '" ><content /></a>')))
