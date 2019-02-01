@@ -1,3 +1,4 @@
+//# replaces redirect link to original. Simple antitracking
 !(function(global) {
   var waitCommon = function(fn) {
     if(global.Bga) {
