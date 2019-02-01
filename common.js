@@ -287,6 +287,7 @@
   
   Bga.parseJson = function(s) {
     try {
+      return JSON.parse(s)
       return Function("".concat("return (", s, ")"))()
     }
     catch(err) {
@@ -389,5 +390,77 @@
   if(0) Object.prototype.inspect = function() {
     console.log(this)
     return this
+  }
+  
+  if(0) {
+    fetch("/foo.php").then(function(response) { 
+      if(response.ok) {
+        a.innerHTML = response.body.text()
+      }
+    })
+    fetch("/foo.php", { method: "POST", body: "data" }).then(function(response) { 
+    })
+    fetch("/foo.php", { headersMap: { "X-Auth": "password" } }).then(function(response) { 
+    })
+  }
+  Bga.fetch = function(url, options) {
+    ;(options != null) || (options = {  })
+    
+    var method = options.method || "GET"
+    var headersMap = options.headersMap || {  }
+    var sendBody = options.sendBody || null
+    
+    var onResponses = []
+    
+    var xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4) {
+        var response = {
+          status: xhr.status, 
+          statusText: xhr.statusText, 
+          url: url, 
+          body: null, 
+          bodyUsed: false
+        }
+        
+        if(xhr.status != 200) {
+          response.ok = false
+        }
+        else {
+          var responseText = xhr.responseText
+          response.ok = true
+          
+          response.bodyUsed = true
+          response.body = { 
+            json: function() {
+              return JSON.parse(responseText)
+            }, 
+            text: function() {
+              return responseText
+            }
+          }
+        }
+
+        xhr = null
+
+        for(var obj = response, i = 0; i != onResponses.length; i += 1) {
+          var onResponse = onResponses[i]
+          obj = onResponse(obj)
+        }
+      }
+    }
+    
+    xhr.open(method, url, true);
+    Object.keys(headersMap).each(function(headerName) {
+      xhr.setRequestHeader(headerName, headersMap[headerName])
+    })
+    xhr.send(sendBody)
+    
+    return ({
+      then: function(onResponse) {
+        onResponses.push(onResponse)
+        return this
+      }
+    })
   }
 })(this)
