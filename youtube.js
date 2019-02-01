@@ -1,9 +1,9 @@
 // ==UserScript==
 // @include        https://www.youtube.com/*
-// @name anti doc.write 
+// @name  
 // @author Bga
 // @version 0.1
-// @description 
+// @description play video via WMP plugin. Plugin here http://www.chip.de/downloads/Windows-Media-Player-Firefox-Plug-in_25565274.html 
 // ==/UserScript==
 
 ;(function(undefined) {
@@ -49,9 +49,10 @@ opera.addEventListener('BeforeScript', function(js) {
     }
   }
   
+  //# allows to use WMP browser plugin for viewing videos
   waitCommon(function() {
     with(Bga) {
-      var log = 1 ? logRaw : logNull
+      var log = (1 ? logRaw : logNull)
       //# fix volume
       0 && setTimeout(function() {
         try {
@@ -62,136 +63,171 @@ opera.addEventListener('BeforeScript', function(js) {
         }
       }, 0)
       
-      //# [keepvid.com]
-      //# env emulation
-      var ap = function(obj) {
-        var url = obj.params.u
-        var onOk = obj.callback
-        var xhr = new XMLHttpRequest()
-        xhr.open("GET", url, true)
-        xhr.onreadystatechange = function() {
-          if(xhr.readyState == 4) {
-            if(200 <= xhr.status && xhr.status < 300) {
-              onOk({
-                headers: "", 
-                body: xhr.responseText
-              })
-            }
-            else {
-              onOk(null)
-            }
-          }
-        }
-        xhr.send(null)
-      }
       onDOMReady(function() {
-        // var player = document.getElementById("default-language-message") || document.getElementById("player-api-legacy") || document.getElementById("player") 
-        var player = document.getElementById("player-api")
-        // var player = document.getElementById("placeholder-player").firstElement
-        player.innerHTML = "<div /><div />"
-        var di = function(options) {
-          //log(options.title + "!")
+        //# lowercase title
+        if(1) {
+          document.title = document.title.replace(/(^|\s)([\s\S]+?)(?=\s|$)/g, function(m, pred, word, post) {
+            return pred + ((word.toUpperCase() == word) ? word.toLowerCase() : word)
+          })          
         }
-        var showMediaPlayer = function(url, w, h) {
-          //# ui height
-          h += 72 
-          //# support video?
-          if(0 && de("<video />").src != null) {
-            player.lastChild.innerHTML = "".concat('<video id=bgaPlayer tabIndex=-1 src="', url, '" controls="true">')
-            setTimeout(function() {
-              var bgaPlayer = player.lastChild.firstChild
-              bgaPlayer.style.minWidth = "".concat(w, "px")
-              bgaPlayer.volume = localStorage.bgaPlayerVolume || 0.2
-              bgaPlayer.play()
-              bgaPlayer.focus()
-              bgaPlayer.onclick = function() {
-                if(bgaPlayer.paused) {
-                  bgaPlayer.play()
-                }
-                else {
-                  bgaPlayer.pause()
-                }
-              }
-              bgaPlayer.onkeydown = function(e) {
-                if(e.shiftKey == false && e.ctrlKey == false && e.altKey == false && e.keyCode == 38) {
-                  localStorage.bgaPlayerVolume = bgaPlayer.volume = Math.min(1, bgaPlayer.volume + 0.05)
-                  e.preventDefault()
-                }
-                else if(e.shiftKey == false && e.ctrlKey == false && e.altKey == false && e.keyCode == 40) {
-                  localStorage.bgaPlayerVolume = bgaPlayer.volume = Math.max(0, bgaPlayer.volume - 0.05)
-                  e.preventDefault()
-                }
-                else {
 
-                }
-              }
-            }, 100)
-          }
-          else {
-            //# player.lastChild.innerHTML = "".concat('<embed src="', url, '" autostart="true" showcontrols="true" showstatusbar="1" type="application/x-mplayer2" bgcolor="white" width="', w, 'px" height="', h, 'px" volume="', volume, '">')
-            player.lastChild.innerHTML = "".concat('<embed src="', url, '" autostart="true" showcontrols="true" showstatusbar="1" type="application/x-mplayer2" bgcolor="white" style="width: ', w, 'px; height: ', h, 'px" volume="', volume, '">')
-            
-            if(0) {
-              var bgaPlayer = player.lastChild.lastChild
-              player.tabIndex=-1
-              player.onkeydown = function(e) {
-                log("keydown")
-                if(0) {
-                    
-                }
-                else if(e.shiftKey == false && e.ctrlKey == false && e.altKey == false && e.keyCode == 32) {
-                  bgaPlayer.controls.pause()
-                  e.preventDefault()
-                }
-                else if(e.shiftKey == false && e.ctrlKey == false && e.altKey == false && e.keyCode == 38) {
-                  localStorage.bgaPlayerVolume = bgaPlayer.volume = Math.min(1, bgaPlayer.volume + 0.05)
-                  e.preventDefault()
-                }
-                else if(e.shiftKey == false && e.ctrlKey == false && e.altKey == false && e.keyCode == 40) {
-                  localStorage.bgaPlayerVolume = bgaPlayer.volume = Math.max(0, bgaPlayer.volume - 0.05)
-                  e.preventDefault()
+        //# load more button
+        if(document.getElementsByClassName("load-more-button")[0] != null) (function() {
+          var bindEvent = function() {
+            var button = document.getElementsByClassName("load-more-button")[0]
+              button.setAttribute("onclick", null)
+              button.addEventListener("click", function(ev) {
+              var targetNode = ev.target
+              var ajaxUrl = targetNode.getAttribute("data-uix-load-more-href")
+              fetch(ajaxUrl).then(function(response) {
+                if(response.ok == false) {
                 }
                 else {
-  
+                  var json = response.body.json()
+                  var div = document.createElement("div")
+                  div.innerHTML = json.load_more_widget_html
+                  document.getElementById("channels-browse-content-grid").appendChild(de(json.content_html))
+                  targetNode.setAttribute("data-uix-load-more-href", div.getElementsByClassName("load-more-button")[0].getAttribute("data-uix-load-more-href"))
                 }
-              }
-}
-
+              })
+            })
           }
-        }
-        var dl = function(obj) {
-          var url = obj.url
-          var type = obj.type
-          var quality = obj.quality
-          var title = obj.title
-          var t = "".concat(type, "-", quality).replace(/<\/?.*?>/g, "")
-          var link = de("".concat('<a href="', url, '" title="', t,  '">', t, '</a> '))
-          link.childNodes[0].onclick = function() {
-            var w
-            var h
-            var qm = quality.match(/(\d+)p$/)
-            log(qm + "!")
-            if(qm) {
-              h = parseInt(+qm[1])
-              w = h / 3 * 4
+          bindEvent()
+        })() 
+          
+        
+        //# play video using WMPlayer plugin
+        if(location.search.match("v=([a-zA-Z0-9-_]+)") != null) (function() {  
+          // var player = document.getElementById("default-language-message") || document.getElementById("player-api-legacy") || document.getElementById("player") 
+          var player = document.getElementById("player-api")
+          // var player = document.getElementById("placeholder-player").firstElement
+          player.innerHTML = "<div /><div />"
+          var di = function(options) {
+            //log(options.title + "!")
+          }
+          var showMediaPlayer = function(url, w, h) {
+            //# ui height
+            h += 72 
+            //# support video?
+            if(0 && de("<video />").src != null) {
+              player.lastChild.innerHTML = "".concat('<video id=bgaPlayer tabIndex=-1 src="', url, '" controls="true">')
+              setTimeout(function() {
+                var bgaPlayer = player.lastChild.firstChild
+                bgaPlayer.style.minWidth = "".concat(w, "px")
+                bgaPlayer.volume = localStorage.bgaPlayerVolume || 0.2
+                bgaPlayer.play()
+                bgaPlayer.focus()
+                bgaPlayer.onclick = function() {
+                  if(bgaPlayer.paused) {
+                    bgaPlayer.play()
+                  }
+                  else {
+                    bgaPlayer.pause()
+                  }
+                }
+                bgaPlayer.onkeydown = function(e) {
+                  if(e.shiftKey == false && e.ctrlKey == false && e.altKey == false && e.keyCode == 38) {
+                    localStorage.bgaPlayerVolume = bgaPlayer.volume = Math.min(1, bgaPlayer.volume + 0.05)
+                    e.preventDefault()
+                  }
+                  else if(e.shiftKey == false && e.ctrlKey == false && e.altKey == false && e.keyCode == 40) {
+                    localStorage.bgaPlayerVolume = bgaPlayer.volume = Math.max(0, bgaPlayer.volume - 0.05)
+                    e.preventDefault()
+                  }
+                  else {
+
+                  }
+                }
+              }, 100)
             }
             else {
-              w = 640
-              h = 480
+              //# player.lastChild.innerHTML = "".concat('<embed src="', url, '" autostart="true" showcontrols="true" showstatusbar="1" type="application/x-mplayer2" bgcolor="white" width="', w, 'px" height="', h, 'px" volume="', volume, '">')
+              player.lastChild.innerHTML = "".concat('<embed src="', url, '" autostart="true" showcontrols="true" showstatusbar="1" type="application/x-mplayer2" bgcolor="white" style="width: ', w, 'px; height: ', h, 'px" volume="', volume, '">')
+              
+              if(0) {
+                var bgaPlayer = player.lastChild.lastChild
+                player.tabIndex=-1
+                player.onkeydown = function(e) {
+                  log("keydown")
+                  if(0) {
+                      
+                  }
+                  else if(e.shiftKey == false && e.ctrlKey == false && e.altKey == false && e.keyCode == 32) {
+                    bgaPlayer.controls.pause()
+                    e.preventDefault()
+                  }
+                  else if(e.shiftKey == false && e.ctrlKey == false && e.altKey == false && e.keyCode == 38) {
+                    localStorage.bgaPlayerVolume = bgaPlayer.volume = Math.min(1, bgaPlayer.volume + 0.05)
+                    e.preventDefault()
+                  }
+                  else if(e.shiftKey == false && e.ctrlKey == false && e.altKey == false && e.keyCode == 40) {
+                    localStorage.bgaPlayerVolume = bgaPlayer.volume = Math.max(0, bgaPlayer.volume - 0.05)
+                    e.preventDefault()
+                  }
+                  else {
+    
+                  }
+                }
+  }
+
             }
-            log(w, h)
-            showMediaPlayer(url, w, h)
-            return false
-          }
-          if(obj.type == "MP4" && (obj.quality == "(Max 480p)" || obj.quality == "720p")) {
-            player.firstChild.appendChild(link)
-          }
-          else {
-            
           }
           
-          log(url, type, quality, title)
-        }
+          //# [keepvid.com]
+          //# env emulation
+          var ap = function(obj) {
+            var url = obj.params.u
+            var onOk = obj.callback
+            var xhr = new XMLHttpRequest()
+            xhr.open("GET", url, true)
+            xhr.onreadystatechange = function() {
+              if(xhr.readyState == 4) {
+                if(200 <= xhr.status && xhr.status < 300) {
+                  onOk({
+                    headers: "", 
+                    body: xhr.responseText
+                  })
+                }
+                else {
+                  onOk(null)
+                }
+              }
+            }
+            xhr.send(null)
+          }
+          var dl = function(obj) {
+            var url = obj.url
+            var type = obj.type
+            var quality = obj.quality
+            var title = obj.title
+            var t = "".concat(type, "-", quality).replace(/<\/?.*?>/g, "")
+            var link = de("".concat('<a href="', url, '" title="', t,  '">', t, '</a> '))
+            link.childNodes[0].onclick = function() {
+              var w
+              var h
+              var qm = quality.match(/(\d+)p$/)
+              log(qm + "!")
+              if(qm) {
+                h = parseInt(+qm[1])
+                w = h / 3 * 4
+              }
+              else {
+                w = 640
+                h = 480
+              }
+              log(w, h)
+              showMediaPlayer(url, w, h)
+              return false
+            }
+            if(obj.type == "MP4" && (obj.quality == "(Max 480p)" || obj.quality == "720p")) {
+              player.firstChild.appendChild(link)
+            }
+            else {
+              
+            }
+            
+            log(url, type, quality, title)
+          }
         ; location.search.match("v=([a-zA-Z0-9-_]+)") && (function(m) {
           log("here")
           var ua
@@ -613,7 +649,8 @@ ap({
         }
     }
 });
-        })(location.search)
+          })(location.search)
+        })()
       })
     }
   })
