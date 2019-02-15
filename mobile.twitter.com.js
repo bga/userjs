@@ -35,6 +35,23 @@ opera.addEventListener('BeforeScript', function(js) {
       onDOMReady(function() {
         var log = 1 ? logRaw : logNull
         
+        //# skip splash screen
+        if(1) {
+          if(document.getElementsByTagName("A").length == 0) {
+            location.reload()
+          }
+          else {
+            
+          }
+          
+          if(document.getElementsByTagName("A").length == 1) {
+            document.getElementsByTagName("A")[0].click()
+          }
+          else {
+            
+          }
+        }
+        
         //# informative page title
         if(1) {
           var match = location.pathname.slice(1).split("/")
