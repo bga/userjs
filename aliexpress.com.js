@@ -1,5 +1,5 @@
 // ==UserScript==
-// @include        https://ru.aliexpress.com/*
+// @include        https://*.aliexpress.com/*
 // @name some helpers
 // @author Bga
 // @version 0.1
@@ -42,6 +42,18 @@ opera.addEventListener('BeforeScript', function(js) {
         else {
           
         }
+        
+        //# show lazy loading images
+        document.getElementsByClassName("picCore").each(function(v) {
+          if(v.src == "") {
+            v.src = v.getAttribute("image-src")
+            v.addClass("pic-Core-v")
+          }
+          else {
+            
+          }
+          
+        })
       })
     }
   })
