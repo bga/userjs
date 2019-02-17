@@ -54,7 +54,17 @@ opera.addEventListener('BeforeScript', function(js) {
         
         //# informative page title
         if(1) {
-          var match = location.pathname.slice(1).split("/")
+          if(location.pathname == "/") {
+            var now = new Date()
+            var padNumber = function(leadingZerosCount, n) {
+              var s = "" + n
+              while(s.length < leadingZerosCount) {
+                s = "0" + s
+              }
+              return s
+            }
+            document.title = "".concat("Twitter ",  padNumber(2, now.getDate()), "/",  padNumber(2, now.getMonth()), "/", padNumber(4, now.getFullYear()), " ", padNumber(2, now.getHours()), ":", padNumber(2, now.getMinutes()))
+          } else { var match = location.pathname.slice(1).split("/")
           if(match.length != 3 || match[1] != "status") {
             
           }
@@ -66,7 +76,7 @@ opera.addEventListener('BeforeScript', function(js) {
             })[0].firstElement.firstChild.data
             document.title = "".concat("@", userName, ' "', tweetText.slice(0, 20).trim(), '..."', " - Twitter")
           }
-        }
+        }}
 
         //# twitter video support
         if(0) {
