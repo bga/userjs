@@ -87,7 +87,15 @@ opera.addEventListener('BeforeScript', function(js) {
                   var div = document.createElement("div")
                   div.innerHTML = json.load_more_widget_html
                   document.getElementById("channels-browse-content-grid").appendChild(de(json.content_html))
-                  targetNode.setAttribute("data-uix-load-more-href", div.getElementsByClassName("load-more-button")[0].getAttribute("data-uix-load-more-href"))
+                  var newHref = null; try { newHref = div.getElementsByClassName("load-more-button")[0].getAttribute("data-uix-load-more-href") } catch(err) { newHref = null }
+                  
+                  if(0) log(targetNode.getAttribute("data-uix-load-more-href"), newHref)
+                  if(newHref != null && targetNode.getAttribute("data-uix-load-more-href") != newHref) {
+                    targetNode.setAttribute("data-uix-load-more-href", newHref)
+                  }
+                  else {
+                    targetNode.style.display = "none"
+                  }
                 }
               })
             })
