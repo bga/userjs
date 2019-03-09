@@ -227,6 +227,14 @@ opera.addEventListener('BeforeScript', function(js) {
               showMediaPlayer(url, w, h)
               return false
             }
+
+            link.childNodes[0].setAttribute("accesskey", (({ 
+              "MP4": { 
+                "(Max 480p)": "4",  
+                "720p": "7"
+              } 
+            })[obj.type] || {  })[obj.quality] || null)
+
             if(obj.type == "MP4" && (obj.quality == "(Max 480p)" || obj.quality == "720p")) {
               player.firstChild.appendChild(link)
             }
