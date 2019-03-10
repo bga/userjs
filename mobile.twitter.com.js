@@ -52,6 +52,23 @@ opera.addEventListener('BeforeScript', function(js) {
           }
         }
         
+        
+        //# hotkeys
+        if(1) (function() { 
+          var safeGetLink = function(href) {
+            var vs = xPath("".concat("//a[@href='", href, "']"))
+            if(vs.length != 0) {
+              return vs[0]
+            }
+            else {
+              return de("<a />")
+            }
+          }
+
+          safeGetLink("/i/connect").setAttribute("accesskey", "r")
+          safeGetLink("/compose/tweet").setAttribute("accesskey", "t")
+        })()
+        
         //# informative page title
         if(1) {
           if(location.pathname == "/") {
