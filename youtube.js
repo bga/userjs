@@ -75,9 +75,8 @@ opera.addEventListener('BeforeScript', function(js) {
         if(document.getElementsByClassName("load-more-button")[0] != null) (function() {
           var bindEvent = function() {
             var button = document.getElementsByClassName("load-more-button")[0]
-              button.setAttribute("onclick", null)
-              button.addEventListener("click", function(ev) {
-              var targetNode = ev.target
+            button.setAttribute("onclick", null)
+            var doLoadMore = function(targetNode) {
               var ajaxUrl = targetNode.getAttribute("data-uix-load-more-href")
               fetch(ajaxUrl).then(function(response) {
                 if(response.ok == false) {
@@ -98,7 +97,20 @@ opera.addEventListener('BeforeScript', function(js) {
                   }
                 }
               })
-            })
+            }
+            
+            button.addEventListener("click", function(ev) {
+              doLoadMore(ev.target)
+              return false
+            }, false)
+            
+            document.body.appendChild(de("<a href=# accesskey=L title='Load more'>")).addEventListener("click", function(ev) {
+              doLoadMore(document.getElementsByClassName("load-more-button")[0])
+              ev.preventDefault()
+              return false
+            }, false)
+            
+            button = null 
           }
           bindEvent()
         })() 
