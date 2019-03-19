@@ -44,13 +44,14 @@ opera.addEventListener('BeforeScript', function(js) {
       opera.postError("imgur.com")
       onDOMReady(function() {
         
-        var urlMatch = location.pathname.match(/^\/a\/(\w+)$/)
+        //# show gallery' images
+        var urlMatch = location.pathname.match(/^\/a|gallery\/(\w+)$/)
         if(urlMatch == null) {
           
         }
         else {
           document.getElementsByClassName("post-images")[0].children.each(function(node) {
-            if(node.tagName.toUpperCase() == "DIV") {
+            if(node.tagName.toUpperCase() == "DIV" && node.id != "") {
               var div = node
               if(div.id != null) {
                 div.replace(de("".concat("<img src='https://i.imgur.com/", div.id, ".png'/>")))
