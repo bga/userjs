@@ -14,7 +14,7 @@ if(location.pathname.match(/^\/embed\//)) {
   location.replace("https://www.youtube.com/watch?v=" + location.pathname.slice(7))
 }
 //# that option show related videos
-else if(location.search.match(/(^|&|\?)nofeather=True(&|$)/) == null) {
+else if(0 && location.search.match(/(^|&|\?)nofeather=True(&|$)/) == null) {
   location.replace(location + ((location.search == "") ? "?" : "&") + "nofeather=True")
 }
 
@@ -116,7 +116,6 @@ opera.addEventListener('BeforeScript', function(js) {
           bindEvent()
         })() 
           
-        
         //# play video using WMPlayer plugin
         if(location.search.match("v=([a-zA-Z0-9-_]+)") != null) (function() {  
           // var player = document.getElementById("default-language-message") || document.getElementById("player-api-legacy") || document.getElementById("player") 
