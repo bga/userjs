@@ -6,14 +6,14 @@
 // @description 
 // ==/UserScript==
 
-/*
 opera.addEventListener('BeforeExternalScript', function(js) {
+  if(0) opera.postError("block external")
   js.preventDefault()
 }, false)
 opera.addEventListener('BeforeScript', function(js) {
+  if(0) opera.postError("block inline")
   js.preventDefault()
 }, false)
-*/
 
 if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) (function() {
   var newQuery = location.search
