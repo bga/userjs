@@ -303,6 +303,17 @@
         
     }
   }
+  Bga.assert.eq = function(expr, expect) {
+    if(expr != expect) {
+      throw new Error("".concat("{ ", expr,  " } != { ", expect, " }"))
+    }
+  }
+  
+  Bga.example = function(test) {
+    setTimeout(function() {
+      test()
+    })
+  }
   
   Bga.inspect = function(v) {
     Bga.log(v)
@@ -463,4 +474,78 @@
       }
     })
   }
+  
+  if(0) Bga.example(function() {
+    with(Bga) {
+      assert.eq(unescapeCString("\"a_\\n_b\""),  "a_\n_b")
+      assert.eq(unescapeCString("\"a_\\\\_b\""), "a_\\_b")
+      assert.eq(unescapeCString("\"a_\\xAB_b\""),  "".concat("a_", String.fromCharCode(0xAB), "_b"))
+      assert.eq(unescapeCString("\"a_\\uABCD_b\""),  "".concat("a_", String.fromCharCode(0xABCD), "_b"))
+      assert.eq(unescapeCString("\"a_\\UABCDDCBA_b\""),  "".concat("a_", String.fromCharCode(0xABCDDCBA), "_b"))
+      assert.eq(unescapeCString("\"a_\\123_b\""),  "".concat("a_", String.fromCharCode(123), "_b"))
+    }
+  })
+  Bga.unescapeCString = function(t) {
+    if(t[0] != "\"" && t[0] != "'") {
+      return t
+    }
+    else {
+      t = t.slice(1, -1).replace(/\\([0-9]{3,3}|x[0-9a-fA-F]{2,2}|u[0-9a-fA-F]{4,4}|U[0-9a-fA-F]{8,8}|(.))/g, function(all, ch) {
+        var $r = ""
+        switch(ch[0]) {
+          case("a"): {
+            $r = "\a"
+          } break
+          case("b"): {
+            $r = "\b"
+          } break
+          case("e"): {
+            $r = "\e"
+          } break
+          case("f"): {
+            $r = "\f"
+          } break
+          case("n"): {
+            $r = "\n"
+          } break
+          case("r"): {
+            $r = "\r"
+          } break
+          case("t"): {
+            $r = "\t"
+          } break
+          case("v"): {
+            $r = "\v"
+          } break
+          case("x"): {
+            $r = String.fromCharCode(parseInt(ch.slice(1), 16))
+          } break
+          case("u"): {
+            $r = String.fromCharCode(parseInt(ch.slice(1), 16))
+          } break
+          case("U"): {
+            $r = String.fromCharCode(parseInt(ch.slice(1), 16))
+          } break
+          case("0"):
+          case("1"):
+          case("2"):
+          case("3"):
+          case("4"):
+          case("5"):
+          case("6"):
+          case("7"):
+          case("8"):
+          case("9"): {
+            $r = String.fromCharCode(parseInt(ch, 10))
+          } break
+          default: {
+            $r = ch
+          }
+        }
+        return $r
+      })
+    }
+    return t
+  }
+
 })(this)
