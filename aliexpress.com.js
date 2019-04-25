@@ -68,6 +68,37 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
           }
           
         })
+        
+        //# show description
+        if(1) (function() {  
+          var descriptionUrl = document.getElementsByTagName("script").each(function(script) {
+            var $r = null
+            do {
+              if(script.text == "") {
+                break
+              }
+              
+              var urlMatch = script.text.match(/\bwindow\.runParams\.detailDesc\s*\=\s*([^;\n\r]*)/)
+              if(urlMatch == null) {
+                break
+              }
+              $r = unescapeCString(urlMatch[1])
+            } while(0);
+            
+            return $r
+          })
+          if(descriptionUrl == null) {
+            
+          }
+          else {
+            log("descriptionUrl", descriptionUrl)
+            fetch(descriptionUrl).then(function(response) { 
+              if(response.ok) {
+                document.getElementsByClassName("description-content")[0].innerHTML = response.body.text()
+              }
+            })
+          }
+        })()
       })
     }
   })
