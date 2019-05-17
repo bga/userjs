@@ -17,7 +17,7 @@ opera.addEventListener('BeforeScript', function(js) {
 
 if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) (function() {
   var newQuery = location.search
-  //# sort by price from lowest to highest by default
+  //# sort by price from lowest to highest by default 
   newQuery.match(/(^|&|\?)SortType=.*?(&|$)/) || (newQuery += "&SortType=price_asc")
   //# free shipping by default
   newQuery.match(/(^|&|\?)isFreeShip=.*?(&|$)/) || (newQuery += "&isFreeShip=y")
@@ -47,11 +47,12 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
       //log("aliexpress")
       
       onDOMReady(function() {
-        //# adds "Short Url" garbage free link near "Show in english"
+
+      //# adds "Short Url" garbage free link near "Show in english" 
         var multiLanguageSwitch = document.getElementsByClassName("multi-language-switch")[0] || document.getElementsByClassName("product-name")[0] 
         if(multiLanguageSwitch != null) {
           var shortUrl = "".concat(location.protocol, "//", [].concat(["www"], location.host.split(".").slice(1)).join("."), location.pathname)
-          multiLanguageSwitch.appendChild(de("".concat('<a href="', shortUrl, '">Short URL</a>')))
+          multiLanguageSwitch.appendChild(de("".concat('<br><a href="', shortUrl, '">Short URL</a>')))
         }
         else {
           
