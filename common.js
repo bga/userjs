@@ -434,7 +434,7 @@
           bodyUsed: false
         }
         
-        if(xhr.status != 200) {
+        if(!(xhr.status == 0 || 200 <= xhr.status && xhr.status < 300)) {
           response.ok = false
         }
         else {
