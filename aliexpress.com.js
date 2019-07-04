@@ -15,6 +15,12 @@ opera.addEventListener('BeforeScript', function(js) {
   js.preventDefault()
 }, false)
 
+//# without product path modification we can not show product' description 
+if(location.pathname.match(/\/item\/\d+.html$/)) (function() {
+  location.pathname = location.pathname.replace("/item/", "/item/product/")
+})()
+
+//# if search page
 if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) (function() {
   var newQuery = location.search
   //# sort by price from lowest to highest by default 
