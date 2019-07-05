@@ -275,6 +275,24 @@
       thi$.parentNode.removeChild(thi$)
       return thi$
     }
+    
+    Node.prototype.removeInlineEvents = (function() {
+      var getEventNames = Bga.memorize(function() {
+        return Object.keys(Bga.de("<div />")).filter(function(name) { return name == name.toLocaleString() && name.slice(0, 2) == "on" })
+      }) 
+      
+      return function(root) { var root = this
+        //? (root == null) || (root = document)
+        var eventNames = getEventNames()
+        //# old style loop for speed
+        var all = root.getElementsByTagName("*")
+        var v = null, i = 0; while(v = all[i++]) {
+          var eventName = "", j = 0; while(eventName = eventNames[j++]) {
+            v.removeAttribute(eventName)
+          }
+        } 
+      }
+    })()
   }  
   
   Bga.parseQueryString = function(s) {
@@ -331,6 +349,25 @@
   }
   Bga.skip = function() {
     throw new Bga.SkipError()
+  }
+  
+  Bga.memorize = function(f) {
+    if(f.length == 0) {
+      return function self() {
+        if(!self.isValueComputed) {
+          self.value = f()
+          self.isValueComputed = true
+        }
+        else {
+        
+        }
+        
+        return self.value
+      }
+    }
+    else {
+      throw "Unsupported arity"
+    }
   }
   
   Bga.buildAndAttachHandleEvent = function(domNode, obj) {

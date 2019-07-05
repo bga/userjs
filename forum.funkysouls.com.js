@@ -29,6 +29,7 @@ opera.addEventListener('BeforeScript', function(js) {
   waitCommon(function() {
     with(Bga) {
       setProtoExpando()
+      document.documentElement.removeInlineEvents()
       
       var log = 0 ? logRaw : logNull
       //disableAllScripts()

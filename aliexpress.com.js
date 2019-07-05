@@ -50,6 +50,7 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
   waitCommon(function() {
     with(Bga) {
       setProtoExpando()
+      document.documentElement.removeInlineEvents()
       
       var log = 1 ? logRaw : logNull
       //log("aliexpress")

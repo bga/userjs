@@ -55,6 +55,7 @@
     waitCommon(function() {
       with(Bga) {
         setProtoExpando()
+        document.documentElement.removeInlineEvents()
         
         var log = 1 ? logRaw : logNull
         if(0) log("Bga")
