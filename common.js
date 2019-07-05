@@ -297,7 +297,7 @@
   
   Bga.parseQueryString = function(s) {
     var $r = {  }
-    s.split("&").each(function(kAndV) {
+    s.split("&").forEach(function(kAndV) {
       var k = kAndV.split("=")[0]
       var v = kAndV.split("=")[1]
       $r[k] = decodeURIComponent(v)
