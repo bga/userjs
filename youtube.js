@@ -64,6 +64,8 @@ opera.addEventListener('BeforeScript', function(js) {
       }, 0)
       
       onDOMReady(function() {
+        var queryParamMap = parseQueryString(location.search.slice(1))
+        
         //# lowercase title
         if(1) {
           document.title = document.title.replace(/(^|\s)([\s\S]+?)(?=\s|$)/g, function(m, pred, word, post) {
@@ -115,7 +117,34 @@ opera.addEventListener('BeforeScript', function(js) {
           }
           bindEvent()
         })() 
+
+        //# next video in playlist
+        if(queryParamMap["list"] != null) (function() {
+          var getVideoId = function(href) {
+            return parseQueryString(href.split("?")[1])["v"]
+          }
+          var currentVideoId = queryParamMap["v"]
+          assert("vLxefatea1Y" == getVideoId("https://www.youtube.com/watch?v=vLxefatea1Y&list=PL0QrZvg7QIgpoLdNFnEePRrU-YJfr9Be7&index=66&t=0s&nofeather=True"))
+          var playListOl = document.getElementById("playlist-autoscroll-list")
+          //# lazy parsing
+          var hrefs = []; playListOl.getElementsByTagName("li").each(function(li) {
+            var href = li.getElementsByClassName("playlist-video")[0].href
+            hrefs.push(href)
+            if(3 <= hrefs.length && getVideoId(hrefs[hrefs.length - 2]) == currentVideoId) {
+              return false
+            }
+          })
+          var nextHref = hrefs[hrefs.length - 1]
+          var prevHref = hrefs[hrefs.length - 3]
           
+          document.body.appendChild(de("".concat("<a accesskey=p href='", prevHref, "' title=Prev></a>")))
+          document.head.prependChild(de("<link rel='prev' href='" + prevHref + "'/>"))
+
+          document.body.appendChild(de("".concat("<a accesskey=n href='", nextHref, "' title=Next></a>")))
+          document.head.prependChild(de("<link rel='next' href='" + nextHref + "'/>"))
+          
+        })()
+
         //# play video using WMPlayer plugin
         if(location.search.match("v=([a-zA-Z0-9-_]+)") != null) (function() {  
           // var player = document.getElementById("default-language-message") || document.getElementById("player-api-legacy") || document.getElementById("player") 
