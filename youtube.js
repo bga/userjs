@@ -52,6 +52,8 @@ opera.addEventListener('BeforeScript', function(js) {
   //# allows to use WMP browser plugin for viewing videos
   waitCommon(function() {
     with(Bga) {
+      setProtoExpando()
+      
       var log = (1 ? logRaw : logNull)
       //# fix volume
       0 && setTimeout(function() {

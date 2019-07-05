@@ -28,6 +28,8 @@ opera.addEventListener('BeforeScript', function(js) {
   
   waitCommon(function() {
     with(Bga) {
+      setProtoExpando()
+      
       var log = 0 ? logRaw : logNull
       //disableAllScripts()
       log("funkysouls")

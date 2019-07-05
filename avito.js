@@ -54,6 +54,8 @@
     
     waitCommon(function() {
       with(Bga) {
+        setProtoExpando()
+        
         var log = 1 ? logRaw : logNull
         if(0) log("Bga")
         if(0) var log = function() {  }

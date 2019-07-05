@@ -38,6 +38,8 @@ if(location.hash == "#comments") {
   
   waitCommon(function() {
     with(Bga) {
+      setProtoExpando()
+
       //# disable logging
       var opera = { postError: function() {  } }
       

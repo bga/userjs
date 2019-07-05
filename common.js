@@ -88,192 +88,194 @@
     }
   }
   
-  document.__defineGetter__("head",  function() { return this.getElementsByTagName("head")[0] }) 
-  
-  Array.prototype.each = function(_fn) { var thi$ = this;
-    var i = -1; while(++i < thi$.length)
-    {
-      var ret = _fn(thi$[i], i)
-      if(ret != null)
-        return ret
-    }
-  }
-  
-  Array.prototype.put = function(v) {
-    if(this.indexOf(v) == -1) {
-      this.push(v)
-    }
-    else {
-      
-    }
-    return this
-  }
-
-  Array.prototype.remove = function(v) {
-    var k = this.indexOf(v)
-    if(k != -1) {
-      this.splice(k, 1)
-    }
-    else {
-      
-    }
-    return this
-  }
-  
-  
-  /*
-  Array.prototype.filter = function(_fn) { var thi$ = this;
-    var ret = []
-    var i = -1; while(++i < thi$.length)
-    {
-      if(_fn(thi$[i]) {
-        ret.push(thi$[i])
+  Bga.setProtoExpando = function() {
+    document.__defineGetter__("head",  function() { return this.getElementsByTagName("head")[0] }) 
+    
+    Array.prototype.each = function(_fn) { var thi$ = this;
+      var i = -1; while(++i < thi$.length)
+      {
+        var ret = _fn(thi$[i], i)
+        if(ret != null)
+          return ret
       }
-    }
-    return ret
-  }
-  */
-  ;[NodeList, StyleSheetList, CSSRuleList].each(function(Class) {
-    Class.prototype.each = function(fn) {
-      return [].slice.call(this, 0).each(fn)
-    }
-  })
-  
-  Node.prototype.__defineGetter__("firstElement",  function() { 
-    var v = this.firstChild
-    for(;;) {
-      if(v == null) {
-        break
-      }
-      else if(v.nodeType == 1) {
-        break
-      }
-      else {
-        v = v.nextSibling
-      }
-    }
-    return v
-  })
-  Node.prototype.prependChild = function(v) {
-    this.insertBefore(v, this.firstChild)
-    return this
-  }
-  
-  if(0) {
-    img.wrap(de("".concat('<a href="', img.src, '" ><content /></a>')))
-    //# short form in case only one node
-    img.wrap(de("".concat('<a href="', img.src, '" />')))
-  }
-  Node.prototype.wrap = function(newParent) { var $this = this
-    $this.parentNode.insertBefore(newParent, $this)
-    var possiblePlace = newParent.getElementsByTagName("content")[0]
-    if(possiblePlace == null) {
-      newParent.appendChild($this)
-    }
-    else {
-      possiblePlace.replace($this)
     }
     
-    return $this
-  }
-  
-  Node.prototype.hasClass = function(className) { var thi$ = this
-    return (" " + thi$.className + " ").indexOf(" " + className + " ") !== -1
-  }
-  Node.prototype.addClass = function(className) { var thi$ = this
-    if(!thi$.hasClass(className)) {
-      if(thi$.className.length > 0) {
-        thi$.className += " " + className
+    Array.prototype.put = function(v) {
+      if(this.indexOf(v) == -1) {
+        this.push(v)
       }
       else {
-        thi$.className = className
+        
       }
+      return this
     }
-  }
-  Node.prototype.delClass = function(className) { var thi$ = this
-    if(thi$.hasClass(className)) {
-      thi$.className = (" " + thi$.className + " ").replace(" " + className + " ", " ")
-    }
-  }
-  Node.prototype.toggleClass = function(className) { var thi$ = this
-    if(thi$.hasClass(className)) {
-      thi$.className = (" " + thi$.className + " ").replace(" " + className + " ", " ")
-    }
-    else {
-      if(thi$.className.length > 0) {
-        thi$.className += " " + className
+
+    Array.prototype.remove = function(v) {
+      var k = this.indexOf(v)
+      if(k != -1) {
+        this.splice(k, 1)
       }
       else {
-        thi$.className = className
+        
       }
+      return this
     }
-  }
-  Node.prototype.up = function(className) { var thi$ = this
-    var predicate = null; {
-      if(Object(className) instanceof Function) {
-        predicate = className
-      }
-      //# assume its real className, also for back compatibility
-      else if(Object(className) instanceof String) {
-        predicate = function(v) {
-          return v.hasClass(className)
+    
+    
+    /*
+    Array.prototype.filter = function(_fn) { var thi$ = this;
+      var ret = []
+      var i = -1; while(++i < thi$.length)
+      {
+        if(_fn(thi$[i]) {
+          ret.push(thi$[i])
         }
       }
-      else {
-        throw "".concat("Unsupported predicate type ", predicate) 
+      return ret
+    }
+    */
+    ;[NodeList, StyleSheetList, CSSRuleList].each(function(Class) {
+      Class.prototype.each = function(fn) {
+        return [].slice.call(this, 0).each(fn)
       }
+    })
+    
+    Node.prototype.__defineGetter__("firstElement",  function() { 
+      var v = this.firstChild
+      for(;;) {
+        if(v == null) {
+          break
+        }
+        else if(v.nodeType == 1) {
+          break
+        }
+        else {
+          v = v.nextSibling
+        }
+      }
+      return v
+    })
+    Node.prototype.prependChild = function(v) {
+      this.insertBefore(v, this.firstChild)
+      return this
     }
     
-    var v = thi$
-    for(;;) {
-      if(predicate(v)) {
-        break
-      }
-      v = v.parentNode
-      if(v == $null) {
-        break
-      }
+    if(0) {
+      img.wrap(de("".concat('<a href="', img.src, '" ><content /></a>')))
+      //# short form in case only one node
+      img.wrap(de("".concat('<a href="', img.src, '" />')))
     }
-    return v
-  }
-  Node.prototype.next = function(predicate) { var thi$ = this
-    var v = thi$.nextSibling
-    for(;;) {
-      if(v == $null) {
-        break
+    Node.prototype.wrap = function(newParent) { var $this = this
+      $this.parentNode.insertBefore(newParent, $this)
+      var possiblePlace = newParent.getElementsByTagName("content")[0]
+      if(possiblePlace == null) {
+        newParent.appendChild($this)
       }
-      if(predicate(v)) {
-        break
+      else {
+        possiblePlace.replace($this)
       }
-      v = v.nextSibling
       
+      return $this
     }
-    return v
-  }
-  Node.prototype.prev = function(predicate) { var thi$ = this
-    var v = thi$.prevSibling
-    for(;;) {
-      if(v == $null) {
-        break
+    
+    Node.prototype.hasClass = function(className) { var thi$ = this
+      return (" " + thi$.className + " ").indexOf(" " + className + " ") !== -1
+    }
+    Node.prototype.addClass = function(className) { var thi$ = this
+      if(!thi$.hasClass(className)) {
+        if(thi$.className.length > 0) {
+          thi$.className += " " + className
+        }
+        else {
+          thi$.className = className
+        }
       }
-      if(predicate(v)) {
-        break
+    }
+    Node.prototype.delClass = function(className) { var thi$ = this
+      if(thi$.hasClass(className)) {
+        thi$.className = (" " + thi$.className + " ").replace(" " + className + " ", " ")
       }
-      v = v.prevSibling
+    }
+    Node.prototype.toggleClass = function(className) { var thi$ = this
+      if(thi$.hasClass(className)) {
+        thi$.className = (" " + thi$.className + " ").replace(" " + className + " ", " ")
+      }
+      else {
+        if(thi$.className.length > 0) {
+          thi$.className += " " + className
+        }
+        else {
+          thi$.className = className
+        }
+      }
+    }
+    Node.prototype.up = function(className) { var thi$ = this
+      var predicate = null; {
+        if(Object(className) instanceof Function) {
+          predicate = className
+        }
+        //# assume its real className, also for back compatibility
+        else if(Object(className) instanceof String) {
+          predicate = function(v) {
+            return v.hasClass(className)
+          }
+        }
+        else {
+          throw "".concat("Unsupported predicate type ", predicate) 
+        }
+      }
       
+      var v = thi$
+      for(;;) {
+        if(predicate(v)) {
+          break
+        }
+        v = v.parentNode
+        if(v == $null) {
+          break
+        }
+      }
+      return v
     }
-    return v
-  }
-  
-  Node.prototype.remove = function() { var thi$ = this
-    thi$.parentNode.removeChild(thi$)
-    return thi$
-  }
-  Node.prototype.replace = function(newNode) { var thi$ = this
-    thi$.parentNode.insertBefore(newNode, thi$)
-    thi$.parentNode.removeChild(thi$)
-    return thi$
-  }
+    Node.prototype.next = function(predicate) { var thi$ = this
+      var v = thi$.nextSibling
+      for(;;) {
+        if(v == $null) {
+          break
+        }
+        if(predicate(v)) {
+          break
+        }
+        v = v.nextSibling
+        
+      }
+      return v
+    }
+    Node.prototype.prev = function(predicate) { var thi$ = this
+      var v = thi$.prevSibling
+      for(;;) {
+        if(v == $null) {
+          break
+        }
+        if(predicate(v)) {
+          break
+        }
+        v = v.prevSibling
+        
+      }
+      return v
+    }
+    
+    Node.prototype.remove = function() { var thi$ = this
+      thi$.parentNode.removeChild(thi$)
+      return thi$
+    }
+    Node.prototype.replace = function(newNode) { var thi$ = this
+      thi$.parentNode.insertBefore(newNode, thi$)
+      thi$.parentNode.removeChild(thi$)
+      return thi$
+    }
+  }  
   
   Bga.parseQueryString = function(s) {
     var $r = {  }

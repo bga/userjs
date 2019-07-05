@@ -33,6 +33,8 @@ opera.addEventListener('BeforeScript', function(js) {
   waitCommon(function() {
     with(Bga) {
       onDOMReady(function() {
+        setProtoExpando()
+        
         var log = 1 ? logRaw : logNull
         
         //# skip splash screen

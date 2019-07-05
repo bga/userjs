@@ -28,6 +28,8 @@ opera.addEventListener('BeforeScript', function(js) {
   waitCommon(function() {
     with(Bga) {
       onDOMReady(function() {
+        setProtoExpando()
+        
         var log = 1 ? logRaw : logNull
         
         var locationQueryParams = parseQueryString(location.search.slice(1))

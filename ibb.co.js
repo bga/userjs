@@ -26,6 +26,8 @@ opera.addEventListener('BeforeScript', function(js) {
   
   waitCommon(function() {
     with(Bga) {
+      setProtoExpando()
+      
       var log = 1 ? logRaw : logNull
       opera.postError("here")
       onDOMReady(function() {
