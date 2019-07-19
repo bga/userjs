@@ -20,6 +20,18 @@ if(location.pathname.match(/\/item\/\d+.html$/)) (function() {
   location.pathname = location.pathname.replace("/item/", "/item/product/")
 })()
 
+
+//# redirect to non locale website version
+if(location.hostname != "www.aliexpress.com") (function() {
+  var region = "RU"
+  var currency = "USD"
+  
+  document.cookie = "intl_locale=en_US;path=/;max-age=5000;domain=.aliexpress.com"
+  document.cookie = "xman_us_f=x_locale=en_US&x_l=0;path=/;max-age=5000;domain=.aliexpress.com"
+  document.cookie = "".concat("aep_usuc_f=site=glo&c_tp=", currency, "&region=", region, "&b_locale=en_US;path=/;max-age=5000;domain=.aliexpress.com")
+  location.hostname = "www.aliexpress.com"
+})()
+
 //# if search page
 if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) (function() {
   var newQuery = location.search
