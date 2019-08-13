@@ -338,19 +338,24 @@ ap({
     },
     "dispose": 1,
     "callback": function(da) {
+        log("111 " + JSON.stringify(Bga.parseQueryString(da.body), null, "  "))
         var title = "";
         var status = "";
+        /*
         try {
             title = unescape(da.body.match("title=([^&]+)")[1]).replace(/\+/g, " ")
         } catch (e) {
             log("Could not get title.")
         }
+        */
         try {
             status = da.body.match("status=([^&]+)")[1]
         } catch (e) {
             log("Could not get status parameter.")
         }
+        
         if (status != "fail") {
+            /*
             di({
                 title: title,
                 image: "https://i.ytimg.com/vi/" + vid + "/default.jpg",
@@ -359,6 +364,7 @@ ap({
                 user: unescape(da.body.match("author=([^&]+)")[1].replace(/\+/g, " ")),
                 duration: duration(da.body.match("length_seconds=([^&]+)")[1])
             });
+            */
             title = escape(title.replace(/\//g, "_").replace(/\"/g, ""));
             var order = ("18,22,37,38,160,133,134,135,136,137,264,138,83,82,85,84,139,140,141,5,6,34,35,13,17,36,43,44,45,46,242,243,244,245,246,247,248,271,272,100,101,102,171,172").split(",");
             files = {
