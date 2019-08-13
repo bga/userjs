@@ -81,7 +81,8 @@ opera.addEventListener('BeforeScript', function(js) {
         //# hotkeys 
         if(1) (function() {
           var tabsDom = document.getElementById("hdtb-msb").querySelectorAll("*[role=tab]")
-          var setAccessKey = function(tabDom, accesskey, description) {
+          var setAccessKey = function(title, accesskey, description) {
+            (description == null) || (description = title)
             var withAnchor = function(v, f) {
               if(v) {
                 f(v)
@@ -92,14 +93,19 @@ opera.addEventListener('BeforeScript', function(js) {
                 document.body.appendChild(v)
               }
             }
+            var hashText = function(t) {
+              return t.replace(/\s+/, " ").trim().toLowerCase()
+            }
+            var titleHash = hashText(title)
+            var tabDom = [].slice.call(tabsDom).filter(function(v) { return hashText(v.textContent) == titleHash })[0]
             withAnchor(tabDom.getElementsByTagName("A")[0], function(v) {
               v.accessKey = accesskey
               v.title = description
             })
           }
-          setAccessKey(tabsDom[0], "A", "All")
-          setAccessKey(tabsDom[1], "I", "Images")
-          setAccessKey(tabsDom[2], "V", "Videos")
+          setAccessKey("All", "A")
+          setAccessKey("Images", "I")
+          setAccessKey("Videos", "V")
         })()
       })
     }
