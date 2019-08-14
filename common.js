@@ -276,23 +276,57 @@
       return thi$
     }
     
+    var processDomOrDe = function(domOrDe, f) {
+      if(domOrDe.nodeType != Node.DOCUMENT_FRAGMENT_NODE) {
+        f(domOrDe)
+      }
+      else {
+        domOrDe.childNodes.each(function(v) {
+          f(v)
+        })
+      }
+      
+      return domOrDe
+    }
+    
     Node.prototype.removeInlineEvents = (function() {
       var getEventNames = Bga.memorize(function() {
         return Object.keys(Bga.de("<div />")).filter(function(name) { return name == name.toLocaleString() && name.slice(0, 2) == "on" })
       }) 
       
-      return function(root) { var root = this
-        //? (root == null) || (root = document)
+      return function() {
         var eventNames = getEventNames()
-        //# old style loop for speed
-        var all = root.getElementsByTagName("*")
-        var v = null, i = 0; while(v = all[i++]) {
-          var eventName = "", j = 0; while(eventName = eventNames[j++]) {
-            v.removeAttribute(eventName)
+        
+        return processDomOrDe(this, function(root) {
+          if(root.getElementsByTagName == null) {
+            
           }
-        } 
+          else {
+            //# old style loop for speed
+            var all = root.getElementsByTagName("*")
+            var v = null, i = 0; while(v = all[i++]) {
+              var eventName = "", j = 0; while(eventName = eventNames[j++]) {
+                v.removeAttribute(eventName)
+              }
+            }
+          }
+        })
       }
     })()
+    
+    Node.prototype.removeScripts = function() {
+      processDomOrDe(this, function(domNode) {
+        if(domNode.getElementsByTagName == null) {
+        }
+        else {
+          ;[].slice.call(domNode.getElementsByTagName("SCRIPT")).forEach(function(v) {
+            v.remove()
+          })
+        }
+      })
+      
+      return this
+    }
   }  
   
   Bga.parseQueryString = function(s) {
