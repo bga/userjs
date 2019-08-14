@@ -91,8 +91,59 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
           
         })
         
-        //# show description
+        //# show description. New style
         if(1) (function() {  
+          var descriptionJsonText = document.getElementsByTagName("script").each(function(script) {
+            var $r = null
+            do {
+              if(script.text == "") {
+                break
+              }
+              
+              var urlMatch = script.text.match(/\bwindow\.runParams\s*\=\s*([\s\S]*?(?:\}\;))/)
+              if(urlMatch == null) {
+                break
+              }
+              $r = unescapeCString(urlMatch[1])
+            } while(0);
+            
+            return $r
+          })
+          if(descriptionJsonText == null) {
+            
+          }
+          else {
+            var descriptionJson = null
+            try {
+              descriptionJson = JSON.parse(descriptionJsonText.match(/data\:\s([\s\S]*?),\n/)[1])
+            }
+            catch(err) {
+              log(err)
+            }
+            
+            if(descriptionJson == null) {
+              
+            }
+            else {
+              var price = descriptionJson.priceModule.formatedPrice
+              var descriptionUrl = descriptionJson.descriptionModule.descriptionUrl
+              log("descriptionUrl", descriptionUrl)
+              fetch(descriptionUrl).then(function(response) { 
+                if(response.ok) {
+                  document.getElementById("root").innerHTML = ""
+                  document.getElementById("root").appendChild(de("".concat(
+                    "<h2>", document.title, "</h2>", 
+                    "<h2>", price, "</h2>", 
+                    response.body.text()
+                  )).removeScripts().removeInlineEvents())
+                }
+              })
+            }
+          }
+        })()
+        
+        //# show description. Old style
+        if(0) (function() {  
           var descriptionUrl = document.getElementsByTagName("script").each(function(script) {
             var $r = null
             do {
