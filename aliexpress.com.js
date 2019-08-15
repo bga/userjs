@@ -49,7 +49,7 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
 
 !(function(global) {
   var waitCommon = function(fn) {
-    if(global.Bga) {
+    if(global.Bga && global.he) {
       fn()
     }
     else {
@@ -90,6 +90,121 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
           }
           
         })
+        
+        //# show listing
+        if(1) if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) (function() {
+          var descriptionJsonText = document.getElementsByTagName("script").each(function(script) {
+            var $r = null
+            do {
+              if(script.text == "") {
+                break
+              }
+              
+              var matchReg = /\bwindow\.runParams\s*\=\s*([\s\S]*?(?:\}\;))/g
+              var jsonMatch = null
+              for(;;) {
+                jsonMatch = matchReg.exec(script.text)
+                if(jsonMatch == null) {
+                  break
+                }
+                else if(jsonMatch[1].length < 100) {
+                  
+                }
+                else {
+                  break
+                }
+              }
+              
+              //var jsonMatch = script.text.match(/\bwindow\.runParams\s*\=\s*([\s\S]{100,}?(?:\}\;))/)
+              if(jsonMatch == null) {
+                break
+              }
+              $r = jsonMatch[1].slice(0, -1)
+            } while(0);
+            
+            return $r
+          })
+          if(descriptionJsonText == null) {
+            
+          }
+          else {
+            var descriptionJson = null
+            try {
+              descriptionJson = JSON.parse(descriptionJsonText)
+            }
+            catch(err) {
+              log(err)
+            }
+            
+            if(descriptionJson == null) {
+              
+            }
+            else {
+              var escapeAttr = function(t) {
+                return he.escape("" + t)
+              }
+              var escapeText = function(t) {
+                return he.escape("" + t)
+              }
+              
+              document.getElementById("root").innerHTML = ""
+              document.getElementById("root").appendChild(de("".concat(
+                '<div class="glosearch-wrap">' 
+                + '<div class="page-content">' 
+                +   '<div class="main-content">' 
+                +     '<div class="right-menu">' 
+                +       '<div class="product-container">' 
+                +         '<div class="gallery-wrap product-list">' 
+                +           '<ul class="list-items">' 
+                +             '<div>',  
+                descriptionJson.items.map(function(item) {
+                  return (
+                    '<li class="list-item" hasctr="y">'
+                      + '<div product-index="0" data-product-id="32820468940" session-id="20190815010933363961975386240000010168" ali-member-id="230908352" algo-exp-id="d4b36b95-905a-47b7-b4fc-5eb24dc0bcde-0" class="gallery product-card middle-place">'
+                          + '<div class="product-img">'
+                              + '<div class="place-container">'
+                                  + '<a target="_blank" data-p4p="true" href="' + escapeAttr(item.productDetailUrl) + '"><img src="' + escapeAttr(item.imageUrl) + '" data-p4p="true" class="item-img" alt="' + escapeAttr(item.title) + '" width="' + escapeAttr(item.imageWidth) + '" height="' + escapeAttr(item.imageHeight) + '"></a>'
+                                  //+ '<div class="report-btn-wrap"><span class="report-item" title="Report fraud item"></span></div>'
+                                  + '<div class="atwl-btn-wrap"><a class="add-wishlist-btn" data-p4p="true"><i data-p4p="true" class="next-icon next-icon-favourite next-medium"></i></a></div>'
+                              + '</div>'
+                          + '</div>'
+                          + '<div class="product-info shrink1" style="min-height: 108px;">'
+                              + '<div class="hover-help">'
+                                  + '<div class="item-title-wrap"><a data-p4p="true" class="item-title" href="' + escapeAttr(item.productDetailUrl) + '" title="' + escapeAttr(item.title) + '" target="_blank">' + escapeAttr(item.title) + '</a></div>'
+                                  + '<div class="item-price-wrap">'
+                                      + '<div class="item-price-row"><span class="price-current">' + escapeText(item.price) + '</span></div>'
+                                  + '</div>'
+                                  + '<div class="item-shipping-wrap"><span class="shipping-value">' + escapeAttr(item.logisticsDesc) + '</span></div>'
+                                  /*
+                                  + '<div class="hold-sale"></div>'
+                                  + '<div class="hold-store"></div>'
+                                  + '<div class="item-sale-wrap">'
+                                      + '<a data-p4p="true" rel="nofollow" class="rating-info" href="' + escapeAttr(item.productDetailUrl) + '#feedback" target="_blank">'
+                                          + '<div class="next-rating next-rating-small next-rating-grade-high" tabindex="0" role="group" aria-label="评分选项">'
+                                              + '<div class="next-rating-base next-rating-base-disabled">'
+                                                  + '<div class="next-rating-underlay" aria-hidden="true"><span class="next-rating-icon"><i class="next-icon next-icon-favorites-filling next-xs"></i></span></div>'
+                                                  + '<div class="next-rating-overlay" style="width: auto;">'
+                                                      + '<form action="#">'
+                                                          + '<label class="next-rating-icon"><i class="next-icon next-icon-favorites-filling next-xs"></i></label>'
+                                                      + '</form>'
+                                                  + '</div>'
+                                              + '</div>'
+                                          + '</div></a>'
+                                      //+ '<div class="sale-info with-star"><span class="sale-value"> <a data-p4p="true" rel="nofollow" class="sale-value-link" href="' + escapeAttr(item.productDetailUrl) + '#thf" target="_blank">1656 Sold</a> </span></div>'
+                                  + '</div>'
+                                  */
+                                  + '<div class="item-store-wrap"><a class="store-name" href="' + escapeAttr(item.store.storeUrl) + '" title="' + escapeAttr(item.store.storeName) + '" target="_blank">' + escapeAttr(item.store.storeName) + '</a></div>'
+                              + '</div>'
+                          + '</div>'
+                      + '</div>'
+                    + '</li>'
+                  )
+                }).join(""), 
+                '</div></ul></div></div></div></div></div></div>'
+              )))
+            }
+          }
+        })()
         
         //# show description. New style
         if(1) (function() {  
