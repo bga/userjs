@@ -45,11 +45,13 @@ opera.addEventListener('BeforeScript', function(js) {
             
             var i = 20
             document.getElementsByClassName("rg_add_chunk")[0].getElementsByClassName("rg_di").each(function(v) {
-              --i >= 0 && rg_s.appendChild(v)
+              --i >= 0 && rg_s.insertBefore(v, rg_s.lastChild)
             })
           }
           
-          document.body.appendChild(de("<a href=# accesskey=L title='Load more'>")).addEventListener("click", function(ev) {
+          //# styles was stealed from YouTube channel's videos Load More button
+          document.getElementById("rg_s").appendChild(de("".concat("<center><button id=loadMoreButton accesskey=L title='Load more' style='outline: #767676 solid 1px; width: 82px; height: 28px; border-radius: 2px; box-shadow: 0px 0px 0px 2px rgba(27, 127, 204, 0.400);'>Load More</button></center>")))
+          document.getElementById("loadMoreButton").addEventListener("click", function(ev) {
             loadMore()
             ev.preventDefault()
             return false
