@@ -91,6 +91,28 @@
   Bga.setProtoExpando = function() {
     document.__defineGetter__("head",  function() { return this.getElementsByTagName("head")[0] }) 
     
+    String.prototype.matchAll = function(re) { var p = this
+      re.global != true && (re = RegExp(re.source, "g"))
+      
+      var $r = []
+      ;p.replace(re, function() {
+        var x = [].slice.apply(arguments, [0, -2])
+        x.index = arguments[arguments.length - 2]
+        x.input = p
+        $r.push(x)
+      })
+      return $r
+    }
+    
+    Array.prototype.flat = function(depth) { var p = this
+      depth == null && (depth = 1)
+      var $r = p
+      while(depth--) {
+        $r = [].concat.apply([], $r)
+      }
+      return $r.filter(function(v) { return v != null })
+    }
+    
     Array.prototype.each = function(_fn) { var thi$ = this;
       var i = -1; while(++i < thi$.length)
       {
