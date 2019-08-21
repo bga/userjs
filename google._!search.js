@@ -80,6 +80,42 @@ opera.addEventListener('BeforeScript', function(js) {
           })
         })()
         
+        //# lazy loading images
+        if(1) (function() {
+          var descriptionJson = null
+          try {
+            descriptionJson = JSON.parse(document.getElementById("xfoot").getElementsByTagName("script")[0].text.match(/\bgoogle\.ldi\s*\=\s*([\s\S]*?(?:\}\;))/)[1].slice(0, -1))
+          }
+          catch(err) {
+            log(err)
+          }
+          
+          if(descriptionJson == null) {
+            
+          }
+          else {
+            Object.keys(descriptionJson).forEach(function(domId) {
+              document.getElementById(domId).src = descriptionJson[domId]
+            })
+          }
+        })()
+        
+        //# lazy loading images
+        if(1) (function() {
+          ;([].slice.call(document.getElementsByTagName("script"))
+            .filter(function(v) { 
+              return v.text != "" 
+            })
+            .map(function(v) { 
+              return v.text.matchAll(/\bvar\s+s\s*\=s*\'([\s\S]+?)\';\s*var\s+ii\s*\=\s*\[\'([\s\S]+?)\'\];\s*_setImagesSrc\(ii\,s\);/) 
+            })
+            .flat()
+            .forEach(function(match) {
+              document.getElementById(match[2]).src = match[1]
+            })
+          )  
+        })()
+        
         //# hotkeys 
         if(1) (function() {
           var tabsDom = document.getElementById("hdtb-msb").querySelectorAll("*[role=tab]")
