@@ -95,7 +95,7 @@ opera.addEventListener('BeforeScript', function(js) {
           }
           else {
             Object.keys(descriptionJson).forEach(function(domId) {
-              document.getElementById(domId).src = descriptionJson[domId]
+              ;(document.getElementById(domId) || { src: "" }).src = descriptionJson[domId]
             })
           }
         })()
@@ -111,7 +111,7 @@ opera.addEventListener('BeforeScript', function(js) {
             })
             .flat()
             .forEach(function(match) {
-              document.getElementById(match[2]).src = match[1]
+              ;(document.getElementById(match[2]) || { src: "" }).src = match[1]
             })
           )  
         })()
