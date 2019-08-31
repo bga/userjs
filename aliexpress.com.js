@@ -157,7 +157,7 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
                 +         '<div class="gallery-wrap product-list">' 
                 +           '<ul class="list-items">' 
                 +             '<div>',  
-                descriptionJson.items.map(function(item) {
+                (descriptionJson.items || []).map(function(item) {
                   return (
                     '<li class="list-item" hasctr="y">'
                       + '<div product-index="0" data-product-id="32820468940" session-id="20190815010933363961975386240000010168" ali-member-id="230908352" algo-exp-id="d4b36b95-905a-47b7-b4fc-5eb24dc0bcde-0" class="gallery product-card middle-place">'
