@@ -16,6 +16,11 @@
       var qso = Bga.parseQueryString(match[1])
       return qso["url"] || qso["q"]; 
     }],
+    //# { "https://www.youtube.com/redirect?q=https%3A%2F%2Fwww.controllino.biz%2F&redir_token=FjbYZ_bLMLiFByycIw2lQE8QbDd8MTU2Mzg4MDQ4MUAxNTYzNzk0MDgx&event=video_description&v=0fDPBtbsUgc" }
+    [/^(?:https?:\/\/)?(?:www\.)?youtube\.(?:com)\/redirect\?([\s\S]*)$/, function(match) { 
+      var qso = Bga.parseQueryString(match[1])
+      return qso["url"] || qso["q"]; 
+    }],
     [/^(?:http:\/\/)?forum\.funkysouls\.com\/go\.php\?([^&]*)/, function(match) { 
       return decodeURIComponent(match[1]); 
     }]
