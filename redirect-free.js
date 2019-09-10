@@ -32,7 +32,7 @@
     with(Bga) {
       onDOMReady(function() {
         var log = 1 ? logRaw : logNull
-        var as = document.links
+        var as = document.links || []
         var a, i = -1
         
         while((a = as[++i]) != null) {
