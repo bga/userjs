@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name           freezeBackgroudActivity
+// @name           he
 // @include        https://*/*
 // @include        http://*/*
 // @description    html escape lib
