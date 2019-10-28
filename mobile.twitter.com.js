@@ -58,18 +58,10 @@ opera.addEventListener('BeforeScript', function(js) {
         
         //# hotkeys
         if(1) (function() { 
-          var safeGetLink = function(href) {
-            var vs = xPath("".concat("//a[@href='", href, "']"))
-            if(vs.length != 0) {
-              return vs[0]
-            }
-            else {
-              return de("<a />")
-            }
-          }
-
-          safeGetLink("/i/connect").setAttribute("accesskey", "r")
-          safeGetLink("/compose/tweet").setAttribute("accesskey", "t")
+          document.body.prependChild(de("".concat(
+            "<a href=/i/connect title=Connect accesskey=r></a>", 
+            "<a href=/compose/tweet title=Tweet accesskey=t></a>"
+          )))
         })()
         
         //# informative page title
