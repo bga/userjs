@@ -126,7 +126,7 @@ opera.addEventListener('BeforeScript', function(js) {
         })()
 
         //# lazy loading images
-        if(1) (function() {
+        if(0) (function() {
           var descriptionJson = null
           try {
             descriptionJson = JSON.parse(document.getElementById("xfoot").getElementsByTagName("script")[0].text.match(/\bgoogle\.ldi\s*\=\s*([\s\S]*?(?:\}\;))/)[1].slice(0, -1))
