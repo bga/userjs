@@ -149,11 +149,25 @@ opera.addEventListener('BeforeScript', function(js) {
         })()
 
         //# play video using WMPlayer plugin
-        if(location.search.match("v=([a-zA-Z0-9-_]+)") != null) (function() {
+        var m = null; if((m = location.search.match("v=([a-zA-Z0-9-_]+)")) != null) (function() {  
+          var video_id = m[1];
           // var player = document.getElementById("default-language-message") || document.getElementById("player-api-legacy") || document.getElementById("player") 
           var player = document.getElementById("player-api")
           // var player = document.getElementById("placeholder-player").firstElement
           player.innerHTML = "<div /><div />"
+          
+          document.head.appendChild(de("".concat("<style>#player-api a { display: block; font-size: 12pt; margin: 2px; text-transform: lowercase; }</style>")))
+          player.firstChild.appendChild(de("<a href=# accesskey=I title='invidio.us mp4 480p'>invidio.us mp4 480p</a>")).addEventListener("click", function(ev) {
+            showMediaPlayer("".concat("https://invidio.us/latest_version?id=", video_id, "&itag=18"))
+            ev.preventDefault()
+            return false
+          }, false)
+          player.firstChild.appendChild(de("<a href=# accesskey=J title='invidio.us mp4 720p'>invidio.us mp4 720p</a>")).addEventListener("click", function(ev) {
+            showMediaPlayer("".concat("https://invidio.us/latest_version?id=", video_id, "&itag=22"))
+            ev.preventDefault()
+            return false
+          }, false)
+
           
           var di = function(options) {
             //log(options.title + "!")
