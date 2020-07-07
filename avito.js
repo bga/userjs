@@ -75,14 +75,14 @@
           }
 
           //# global search link + hotkey
-          if(1) (function() {
+          if(1) try { (function() {
             var labelsDiv = document.querySelector("div[class^=index-additions]");
             var labels = labelsDiv.getElementsByTagName("LABEL");
             var lastLabel = labels[labels.length - 1];
             var globalSearchUrl = "".concat("/rossiya", location.search)
             lastLabel.parentNode.appendChild(de("".concat("&nbsp;<a href='", globalSearchUrl, "' title=Россия accessKey=R>Россия</a>")))
             lastLabel.parentNode.appendChild(de("".concat("&nbsp;<a href='", "".concat(localCityUrl, location.search), "' title='", localCityName, "' accessKey=L>", localCityName, "</a>")))
-          })()
+          })() } catch(err) {  }
 
 
           //# simplified gallery
