@@ -149,11 +149,12 @@ opera.addEventListener('BeforeScript', function(js) {
         })()
 
         //# play video using WMPlayer plugin
-        if(location.search.match("v=([a-zA-Z0-9-_]+)") != null) (function() {  
+        if(location.search.match("v=([a-zA-Z0-9-_]+)") != null) (function() {
           // var player = document.getElementById("default-language-message") || document.getElementById("player-api-legacy") || document.getElementById("player") 
           var player = document.getElementById("player-api")
           // var player = document.getElementById("placeholder-player").firstElement
           player.innerHTML = "<div /><div />"
+          
           var di = function(options) {
             //log(options.title + "!")
           }
@@ -338,7 +339,32 @@ ap({
     },
     "dispose": 1,
     "callback": function(da) {
-        log("111 " + JSON.stringify(Bga.parseQueryString(da.body), null, "  "))
+        if(0) log("111 " + JSON.stringify(Bga.parseQueryString(da.body), null, "  "))
+        var streamingData = JSON.parse(Bga.parseQueryString(da.body).player_response).streamingData 
+        var formats = streamingData.formats.concat(streamingData.adaptiveFormats)
+        formats.each(function(format) {
+          if(format.itag == 18) {
+            dl({
+                url: format.url,
+                title: "(Max 480p)",
+                type: "MP4",
+                quality: "(Max 480p)",
+            })
+          }
+          else if(format.itag == 22) {
+            dl({
+                url: format.url,
+                title: "720p",
+                type: "MP4",
+                quality: "720p",
+            })
+          }
+          else {
+            
+          }
+        })
+        
+        return
         var title = "";
         var status = "";
         /*
