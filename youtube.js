@@ -92,7 +92,14 @@ opera.addEventListener('BeforeScript', function(js) {
             var doLoadMore = function(targetNode) {
               var ajaxAppendId = targetNode.getAttribute("data-uix-load-more-target-id")
               var ajaxUrl = targetNode.getAttribute("data-uix-load-more-href")
-              fetch(ajaxUrl).then(function(response) {
+              fetch(ajaxUrl, { headersMap: { 
+                  "X-YouTube-Client-Name": "1",  
+                  "X-YouTube-Client-Version": "1.20200701.03.01",  
+                  "X-YouTube-Page-Label": "youtube.ytfe.desktop_20200630_3_RC1",  
+                  "X-YouTube-Utc-Offset": "180",  
+                  "X-YouTube-Time-Zone": "Asia/Riyadh",  
+                  // "": "",  
+                } }).then(function(response) {
                 if(response.ok == false) {
                 }
                 else {
@@ -176,7 +183,6 @@ opera.addEventListener('BeforeScript', function(js) {
             return false
           }, false)
 
-          
           var di = function(options) {
             //log(options.title + "!")
           }
@@ -313,6 +319,7 @@ opera.addEventListener('BeforeScript', function(js) {
           }
         ; location.search.match("v=([a-zA-Z0-9-_]+)") && (function(m) {
           log("here")
+          
           var ua
 
 //function: convert seconds to 1:11 readable format
