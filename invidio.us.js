@@ -6,6 +6,8 @@
 // @description play video via WMP plugin. Plugin here http://www.chip.de/downloads/Windows-Media-Player-Firefox-Plug-in_25565274.html
 // ==/UserScript==
 
+if(1) location.replace(String(location).replace("/invidio.us/", "/www.youtube.com/"));
+
 ;(function(undefined) {
 
 var volume = 0;
