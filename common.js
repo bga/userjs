@@ -5,11 +5,11 @@
 
 !(function(global) {
   var $null = null
-  
+
   if(window.Bga == null) {
     window.Bga = {}
   }
-  
+
   Bga.xpath = Bga.xPath = function(expr, root) {
     if(root == null) {
       root = document.documentElement
@@ -17,14 +17,14 @@
     var vs = document.evaluate(expr, document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null)
     var i = vs.snapshotLength
     var ret = []
-    
+
     while(i--) {
       ret[i] = vs.snapshotItem(i)
     }
-    
+
     return ret
   }
-  
+
   Bga.disableAllScripts = function() {
     opera.addEventListener('BeforeExternalScript', function(js) {
       js.preventDefault()
@@ -33,7 +33,7 @@
       js.preventDefault()
     }, false)
   }
-  
+
   // opera has some issue with DOMContentLoaded
   Bga.onDOMReady = (function() {
     var _isLoaded = (
@@ -43,7 +43,7 @@
       || function() {
         return document.body
       }
-    ) 
+    )
     var _attachEvent = (
       'onreadystatechange' in document && function(_fn)
       {
@@ -54,7 +54,7 @@
         document.addEventListener('DOMContentLoaded', _fn, false);
       }
     )
-  
+
     return function(_fn) {
       if(_isLoaded())
         _fn()
@@ -62,7 +62,7 @@
         _attachEvent(_fn)
     }
   })();
-  
+
   Bga.de = function(s) {
     var div = document.createElement("div")
     div.innerHTML = s
@@ -77,7 +77,7 @@
       return de
     }
   }
-  
+
   Bga.logNull = function() {  }
   Bga.logRaw = function() {
     if(window.opera) {
@@ -87,13 +87,41 @@
       console.log([].join.call(arguments, " "))
     }
   }
-  
+
   Bga.setProtoExpando = function() {
-    document.__defineGetter__("head",  function() { return this.getElementsByTagName("head")[0] }) 
-    
+    document.__defineGetter__("head",  function() { return this.getElementsByTagName("head")[0] })
+
+    Object.prototype.inspect = function() {
+      console.log(this)
+      return this
+    }
+
+    Object.prototype.tap = function(f) {
+      f(this)
+      return this
+    }
+
+    String.prototype.startsWith = function(prefix, pos) { var p = this;
+      pos = pos > 0 ? (0 | pos) : 0;
+
+      return p.substring(pos, pos + prefix.length) == prefix;
+    }
+    String.prototype.endsWith = function(search, this_len) {
+      if (this_len == null || this_len > this.length) {
+        this_len = this.length;
+      }
+      return this.substring(this_len - search.length, this_len) === search;
+    }
+    String.prototype.includes = function(search, start) {
+      if (search instanceof RegExp) {
+        throw TypeError('first argument must not be a RegExp');
+      }
+      if (start == null) { start = 0; }
+      return this.indexOf(search, start) !== -1;
+    };
     String.prototype.matchAll = function(re) { var p = this
       re.global != true && (re = RegExp(re.source, "g"))
-      
+
       var $r = []
       ;p.replace(re, function() {
         var x = [].slice.apply(arguments, [0, -2])
@@ -103,7 +131,7 @@
       })
       return $r
     }
-    
+
     Array.prototype.flat = function(depth) { var p = this
       depth == null && (depth = 1)
       var $r = p
@@ -112,7 +140,7 @@
       }
       return $r.filter(function(v) { return v != null })
     }
-    
+
     Array.prototype.each = function(_fn) { var thi$ = this;
       var i = -1; while(++i < thi$.length)
       {
@@ -121,13 +149,13 @@
           return ret
       }
     }
-    
+
     Array.prototype.put = function(v) {
       if(this.indexOf(v) == -1) {
         this.push(v)
       }
       else {
-        
+
       }
       return this
     }
@@ -138,12 +166,12 @@
         this.splice(k, 1)
       }
       else {
-        
+
       }
       return this
     }
-    
-    
+
+
     /*
     Array.prototype.filter = function(_fn) { var thi$ = this;
       var ret = []
@@ -161,8 +189,8 @@
         return [].slice.call(this, 0).each(fn)
       }
     })
-    
-    Node.prototype.__defineGetter__("firstElement",  function() { 
+
+    Node.prototype.__defineGetter__("firstElement",  function() {
       var v = this.firstChild
       for(;;) {
         if(v == null) {
@@ -181,7 +209,7 @@
       this.insertBefore(v, this.firstChild)
       return this
     }
-    
+
     if(0) {
       img.wrap(de("".concat('<a href="', img.src, '" ><content /></a>')))
       //# short form in case only one node
@@ -196,10 +224,10 @@
       else {
         possiblePlace.replace($this)
       }
-      
+
       return $this
     }
-    
+
     Node.prototype.hasClass = function(className) { var thi$ = this
       return (" " + thi$.className + " ").indexOf(" " + className + " ") !== -1
     }
@@ -243,10 +271,10 @@
           }
         }
         else {
-          throw "".concat("Unsupported predicate type ", predicate) 
+          throw "".concat("Unsupported predicate type ", predicate)
         }
       }
-      
+
       var v = thi$
       for(;;) {
         if(predicate(v)) {
@@ -269,7 +297,7 @@
           break
         }
         v = v.nextSibling
-        
+
       }
       return v
     }
@@ -283,11 +311,11 @@
           break
         }
         v = v.prevSibling
-        
+
       }
       return v
     }
-    
+
     Node.prototype.remove = function() { var thi$ = this
       thi$.parentNode.removeChild(thi$)
       return thi$
@@ -297,7 +325,7 @@
       thi$.parentNode.removeChild(thi$)
       return thi$
     }
-    
+
     var processDomOrDe = function(domOrDe, f) {
       if(domOrDe.nodeType != Node.DOCUMENT_FRAGMENT_NODE) {
         f(domOrDe)
@@ -307,21 +335,21 @@
           f(v)
         })
       }
-      
+
       return domOrDe
     }
-    
+
     Node.prototype.removeInlineEvents = (function() {
       var getEventNames = Bga.memorize(function() {
         return Object.keys(Bga.de("<div />")).filter(function(name) { return name == name.toLocaleString() && name.slice(0, 2) == "on" })
-      }) 
-      
+      })
+
       return function() {
         var eventNames = getEventNames()
-        
+
         return processDomOrDe(this, function(root) {
           if(root.getElementsByTagName == null) {
-            
+
           }
           else {
             //# old style loop for speed
@@ -335,7 +363,7 @@
         })
       }
     })()
-    
+
     Node.prototype.removeScripts = function() {
       processDomOrDe(this, function(domNode) {
         if(domNode.getElementsByTagName == null) {
@@ -346,10 +374,17 @@
           })
         }
       })
-      
+
       return this
     }
-  }  
+  }
+
+  //# -> standard Location object
+  Bga.parseUrl = function(url) {
+    return document.createElement("A").tap(function(a) {
+      a.href = url
+    })
+  }
   
   Bga.parseQueryString = function(s) {
     var $r = {  }
@@ -360,7 +395,14 @@
     })
     return $r
   }
-  
+  Bga.stringifyQueryString = function(map) {
+    return (Object.keys(map).map(function(k) {
+        return "".concat(k, "=", encodeURIComponent(map[k]))
+      })
+      .join("&")
+    )
+  }
+
   Bga.parseJson = function(s) {
     try {
       return JSON.parse(s)
@@ -370,13 +412,13 @@
       return null
     }
   }
-  
+
   Bga.assert = function(expr) {
     if(!expr) {
       throw new Error("Assert failed")
     }
     else {
-        
+
     }
   }
   Bga.assert.eq = function(expr, expect) {
@@ -384,13 +426,13 @@
       throw new Error("".concat("{ ", expr,  " } != { ", expect, " }"))
     }
   }
-  
+
   Bga.example = function(test) {
     setTimeout(function() {
       test()
     })
   }
-  
+
   Bga.inspect = function(v) {
     Bga.log(v)
     return v
@@ -399,14 +441,14 @@
     Bga.log(v.length)
     return v
   }
-  
+
   Bga.SkipError = function() {
-    
+
   }
   Bga.skip = function() {
     throw new Bga.SkipError()
   }
-  
+
   Bga.memorize = function(f) {
     if(f.length == 0) {
       return function self() {
@@ -415,9 +457,9 @@
           self.isValueComputed = true
         }
         else {
-        
+
         }
-        
+
         return self.value
       }
     }
@@ -425,26 +467,26 @@
       throw "Unsupported arity"
     }
   }
-  
+
   Bga.buildAndAttachHandleEvent = function(domNode, obj) {
     var eventNames = []; for(var name in obj) if(true || obj.hasOwnProperty(name)) {
       var m = name.split(/\s/)
       //# { "on .ok-button click" }
       if(m[0] == "on") {
         eventNames.push({
-          className: m[1], 
+          className: m[1],
           type: m[2]
         })
       }
       else {
-        
+
       }
-    } 
+    }
     obj.handleEvent = function(event) { var p = obj //# weirdly in Opera { this == window } :/
       var className = event.target.className
       if(className.length != 0) {
         className.split(" ").forEach(function(className){
-          var eventName = "".concat("on .", className, " ", event.type) 
+          var eventName = "".concat("on .", className, " ", event.type)
           if(eventName in p) {
             p[eventName](event, className)
           }
@@ -453,94 +495,119 @@
         })
       }
       else {
-        
+
       }
     }
-    
+
     //# [https://stackoverflow.com/a/14438954]
-    function onlyUnique(value, index, self) { 
+    function onlyUnique(value, index, self) {
       return self.indexOf(value) === index;
     }
-    
+
     eventNames.map(function(name) { return name.type }).filter(onlyUnique).forEach(function(type) {
       domNode.addEventListener(type, obj, false)
     })
-    
+
     //# memory cleanup
     eventNames = null
   }
-    
+
   if(0) {
     var TableWidget = function(domNode) {
       // generates { this.handleEvent } and calls { domNode.addEventListener(type, this, false) } each event type
       Bga.buildAndAttachHandleEvent(domNode, this)
     }
     TableWidget.prototype["on .tr click"] = function(event, className) {
-      
-    } 
+
+    }
     TableWidget.prototype.onTdClick = function(event, className) {
-      
-    } 
+
+    }
     TableWidget.prototype.onThClick = function(event, className) {
-      
+
     }
   }
   if(0) {
     Bga.buildAndAttachHandleEvent(document.documentElement, {
       "on .ok click": function() {
-        
+
       }
     })
+  }
+  
+  if(typeof Object.assign !== 'function') {
+    // Must be writable: true, enumerable: false, configurable: true
+    Object.assign = function assign(target, varArgs) { // .length of function is 2
+      if(target === null || target === undefined) {
+        throw new TypeError('Cannot convert undefined or null to object');
+      }
+
+      var to = Object(target);
+
+      for(var index = 1; index < arguments.length; index++) {
+        var nextSource = arguments[index];
+
+        if(nextSource !== null && nextSource !== undefined) { 
+          for(var nextKey in nextSource) {
+            // Avoid bugs when hasOwnProperty is shadowed
+            if(Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+              to[nextKey] = nextSource[nextKey];
+            }
+          }
+        }
+      }
+      return to;
+    }
   }
   
   if(0) Object.prototype.inspect = function() {
     console.log(this)
     return this
   }
-  
+
   if(0) {
-    fetch("/foo.php").then(function(response) { 
+    fetch("/foo.php").then(function(response) {
       if(response.ok) {
         a.innerHTML = response.body.text()
       }
     })
-    fetch("/foo.php", { method: "POST", body: "data" }).then(function(response) { 
+    fetch("/foo.php", { method: "POST", body: "data" }).then(function(response) {
     })
-    fetch("/foo.php", { headersMap: { "X-Auth": "password" } }).then(function(response) { 
+    fetch("/foo.php", { headersMap: { "X-Auth": "password" } }).then(function(response) {
     })
   }
   Bga.fetch = function(url, options) {
     ;(options != null) || (options = {  })
-    
+
     var method = options.method || "GET"
     var headersMap = options.headersMap || {  }
     var sendBody = options.sendBody || null
-    
+
     var onResponses = []
-    
+
     var xhr = new XMLHttpRequest()
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4) {
         var response = {
-          status: xhr.status, 
-          statusText: xhr.statusText, 
-          url: url, 
-          body: null, 
+          status: xhr.status,
+          statusText: xhr.statusText,
+          url: url,
+          body: null,
           bodyUsed: false
         }
-        
+
         if(!(xhr.status == 0 || 200 <= xhr.status && xhr.status < 300)) {
           response.ok = false
         }
         else {
           var responseText = xhr.responseText
           response.ok = true
-          
+
           response.bodyUsed = true
-          response.body = { 
+          response.body = {
             json: function() {
               return JSON.parse(responseText)
-            }, 
+            },
             text: function() {
               return responseText
             }
@@ -555,13 +622,13 @@
         }
       }
     }
-    
+
     xhr.open(method, url, true);
     Object.keys(headersMap).each(function(headerName) {
       xhr.setRequestHeader(headerName, headersMap[headerName])
     })
     xhr.send(sendBody)
-    
+
     return ({
       then: function(onResponse) {
         onResponses.push(onResponse)
@@ -569,7 +636,7 @@
       }
     })
   }
-  
+
   if(0) Bga.example(function() {
     with(Bga) {
       assert.eq(unescapeCString("\"a_\\n_b\""),  "a_\n_b")
