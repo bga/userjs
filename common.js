@@ -92,7 +92,7 @@
     document.__defineGetter__("head",  function() { return this.getElementsByTagName("head")[0] })
 
     Object.prototype.inspect = function() {
-      console.log(this)
+      Bga.logRaw((this.inspect_toString instanceof Function) ? this.inspect_toString() : this.toString())
       return this
     }
 
@@ -560,11 +560,6 @@
     }
   }
   
-  if(0) Object.prototype.inspect = function() {
-    console.log(this)
-    return this
-  }
-
   if(0) {
     fetch("/foo.php").then(function(response) {
       if(response.ok) {
