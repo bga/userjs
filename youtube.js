@@ -58,7 +58,7 @@ opera.addEventListener('BeforeScript', function(js) {
   }
   
   //# allows to use WMP browser plugin for viewing videos
-  waitCommon(function onLoad() {
+  waitCommon(function() {
     with(Bga) {
       setProtoExpando()
       document.documentElement.removeInlineEvents()
@@ -74,37 +74,29 @@ opera.addEventListener('BeforeScript', function(js) {
         }
       }, 0)
       
-      //# refetch page with magic headers to get old scriptless html
-      if(1) (function() {
-        if(document.getElementById("player-api") != null) return;
-        
-        document.cookie = "PREF=al=en&f5=30030&f6=9";
-        fetch(location.toString() + "&pbj=1", { headersMap: { 
-            "X-YouTube-Client-Name": "1",  
-            "X-YouTube-Client-Version": "1.20200701.03.01",  
-            // "": "",  
-          } }).then(function(response) {
-          if(response.ok == false) {
-          }
-          else {
-            document.documentElement.innerHTML = response.body.text()
-            setTimeout(onLoad);
-          }
-        })
-      })();
-      
-      //# load video' previews
-      if(1) (function() {
-        document.getElementsByClassName("yt-uix-simple-thumb-wrap").each(function(v) {
-          var img = v.getElementsByTagName("IMG")[0]
-          if(img == null) return;
-          img.src = img.getAttribute("data-thumb");
-        })
-      })()
-      
-      
-      onDOMReady(function() {
+      onDOMReady(function onLoad() {
         var queryParamMap = parseQueryString(location.search.slice(1))
+        
+        //# refetch page with magic headers to get old scriptless html
+        if(location.search.match("v=([a-zA-Z0-9-_]+)") != null && document.getElementById("eow-description") == null) {
+          
+          document.cookie = "PREF=al=en&f5=30030&f6=9";
+          fetch(location.toString() + "&pbj=1", { headersMap: { 
+              "X-YouTube-Client-Name": "1",  
+              "X-YouTube-Client-Version": "1.20200701.03.01",  
+              // "": "",  
+            } }).then(function(response) {
+            if(response.ok == false) {
+            }
+            else {
+              document.documentElement.innerHTML = response.body.text()
+              setTimeout(onLoad);
+            }
+          })
+          
+          return;
+        }
+
         
         //# lowercase title
         if(1) {
@@ -113,6 +105,16 @@ opera.addEventListener('BeforeScript', function(js) {
           })          
         }
 
+        //# load video' previews
+        if(1) (function() {
+          document.getElementsByClassName("yt-uix-simple-thumb-wrap").each(function(v) {
+            var img = v.getElementsByTagName("IMG")[0]
+            if(img == null) return;
+            img.src = img.getAttribute("data-thumb");
+          })
+        })()
+
+        
         //# load more button
         if(document.getElementsByClassName("load-more-button")[0] != null) (function() {
           var bindEvent = function() {
