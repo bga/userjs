@@ -58,7 +58,7 @@ opera.addEventListener('BeforeScript', function(js) {
   }
   
   //# allows to use WMP browser plugin for viewing videos
-  waitCommon(function() {
+  waitCommon(function onLoad() {
     with(Bga) {
       setProtoExpando()
       document.documentElement.removeInlineEvents()
@@ -73,6 +73,24 @@ opera.addEventListener('BeforeScript', function(js) {
           setTimeout(arguments.callee, 100)
         }
       }, 0)
+      
+      if(1) (function() {
+        if(document.getElementById("player-api") != null) return;
+        
+        document.cookie = "PREF=al=en&f5=30030&f6=9";
+        fetch(location.toString() + "&pbj=1", { headersMap: { 
+            "X-YouTube-Client-Name": "1",  
+            "X-YouTube-Client-Version": "1.20200701.03.01",  
+            // "": "",  
+          } }).then(function(response) {
+          if(response.ok == false) {
+          }
+          else {
+            document.documentElement.innerHTML = response.body.text()
+            setTimeout(onLoad);
+          }
+        })
+      })();
       
       onDOMReady(function() {
         var queryParamMap = parseQueryString(location.search.slice(1))
