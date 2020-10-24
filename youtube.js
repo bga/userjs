@@ -74,6 +74,7 @@ opera.addEventListener('BeforeScript', function(js) {
         }
       }, 0)
       
+      //# refetch page with magic headers to get old scriptless html
       if(1) (function() {
         if(document.getElementById("player-api") != null) return;
         
@@ -91,6 +92,16 @@ opera.addEventListener('BeforeScript', function(js) {
           }
         })
       })();
+      
+      //# load video' previews
+      if(1) (function() {
+        document.getElementsByClassName("yt-uix-simple-thumb-wrap").each(function(v) {
+          var img = v.getElementsByTagName("IMG")[0]
+          if(img == null) return;
+          img.src = img.getAttribute("data-thumb");
+        })
+      })()
+      
       
       onDOMReady(function() {
         var queryParamMap = parseQueryString(location.search.slice(1))
