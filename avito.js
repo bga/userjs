@@ -153,6 +153,14 @@
             sliderDom.innerHTML = ""
             sliderDom.appendChild(de("".concat('<img src="', photoUrl, '" class="photo-count-show large-picture" alt="">')))
           })
+
+          //# show 1st image of slider photos
+          if(1) document.querySelectorAll("ul[class^=photo-slider-list-]").each(function(v) {
+            var firstImageLi = v.children[0]
+            //# { "slider-image/image-https://72.img.avito.st/208x156/DDDDDDDDDD.jpg" }
+            var photoUrl = (firstImageLi.getAttribute("data-marker") || "").replace("slider-image/image-https:", "https:")
+            v.parentNode.replace(de("".concat('<img src="', photoUrl, '" class="photo-count-show large-picture" alt="">')))
+          })
         }
 
         onDOMReady(main)
