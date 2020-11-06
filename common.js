@@ -55,12 +55,23 @@
       }
     )
 
-    return function(_fn) {
+    var $p = function(_fn) {
+      $p.fns.push(_fn)
       if(_isLoaded())
         _fn()
       else
         _attachEvent(_fn)
     }
+    
+    $p.fns = []
+    
+    $p.fireEvent = function() {
+      $p.fns.forEach(function(_fn) { 
+        setTimeout(_fn, 0)
+      })
+    }
+    
+    return $p
   })();
 
   Bga.de = function(s) {
