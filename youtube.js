@@ -90,7 +90,7 @@ opera.addEventListener('BeforeScript', function(js) {
             }
             else {
               document.documentElement.innerHTML = response.body.text()
-              setTimeout(onLoad);
+              Bga.onDOMReady.fireEvent()
             }
           })
           
