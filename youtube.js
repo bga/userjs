@@ -114,7 +114,13 @@ opera.addEventListener('BeforeScript', function(js) {
           })
         })()
 
-        
+        //# show full video desc 
+        if(1) (function() {
+          var v = document.getElementById("action-panel-details")
+          if(v == null) return
+          v.delClass("yt-uix-expander-collapsed")
+        })()
+
         //# load more button
         if(document.getElementsByClassName("load-more-button")[0] != null) (function() {
           var bindEvent = function() {
