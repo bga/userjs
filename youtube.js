@@ -81,9 +81,9 @@ opera.addEventListener('BeforeScript', function(js) {
         if(location.search.match("v=([a-zA-Z0-9-_]+)") != null && document.getElementById("eow-description") == null) {
           
           document.cookie = "PREF=al=en&f5=30030&f6=9";
-          fetch(location.toString() + "&pbj=1", { headersMap: { 
+          fetch(location.toString().replace("&disable_polymer=1", "") + "&pbj=1", { headersMap: { 
               "X-YouTube-Client-Name": "1",  
-              "X-YouTube-Client-Version": "1.20200701.03.01",  
+              "X-YouTube-Client-Version": "1.20200731.02.01",  
               // "": "",  
             } }).then(function(response) {
             if(response.ok == false) {
