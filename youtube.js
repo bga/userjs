@@ -89,7 +89,13 @@ opera.addEventListener('BeforeScript', function(js) {
             if(response.ok == false) {
             }
             else {
-              document.documentElement.innerHTML = response.body.text()
+              //# fallback
+              var genPageTemplate = function() {
+                return "".concat('<div id="eow-description"></div><div id="player-api" style="position: relative; left: 2px; top: 2px"/>')
+              }
+              
+              var html = response.body.text();
+              document.documentElement.innerHTML = ((html.toLowerCase().match(/<\s*body/i)) ? html : genPageTemplate())
               Bga.onDOMReady.fireEvent()
             }
           })
