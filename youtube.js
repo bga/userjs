@@ -91,7 +91,7 @@ opera.addEventListener('BeforeScript', function(js) {
             else {
               //# fallback
               var genPageTemplate = function() {
-                return "".concat('<div id="eow-description"></div><div id="player-api" style="position: relative; left: 2px; top: 2px"/>')
+                return "".concat((document.getElementsByTagName("TITLE")[0] || { outerHTML: "" }).outerHTML, '<div id="eow-description"></div><div id="player-api" style="position: relative; left: 2px; top: 2px"/>')
               }
               
               var html = response.body.text();
