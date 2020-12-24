@@ -187,6 +187,7 @@ opera.addEventListener('BeforeScript', function(js) {
           var currentVideoId = queryParamMap["v"]
           assert("vLxefatea1Y" == getVideoId("https://www.youtube.com/watch?v=vLxefatea1Y&list=PL0QrZvg7QIgpoLdNFnEePRrU-YJfr9Be7&index=66&t=0s&nofeather=True"))
           var playListOl = document.getElementById("playlist-autoscroll-list")
+          if(playListOl == null) return;
           //# lazy parsing
           var hrefs = []; playListOl.getElementsByTagName("li").each(function(li) {
             var href = li.getElementsByClassName("playlist-video")[0].href
