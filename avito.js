@@ -74,6 +74,30 @@
 
           }
 
+          //# fix search form
+          if(1) try { (function() {
+            var hashText = function(s) {
+              return s.trim().toUpperCsse().replace(/\s+/g, " ")
+            }
+            
+            var searchInput = document.getElementById("search");
+            var form = document.body.prependChild(de("<form action=/ id=searchForm />"));
+            searchInput.setAttribute("form", "searchForm");
+            
+            var oldSearchTextHash = hashText(searchInput.value);
+            form.addEventListener("submit", function(ev) {
+              ev.preventDefault();
+
+              var newSearchText = searchInput.value.trim();
+              if(newSearchText.length == 0 || hashText(newSearchText) == oldSearchTextHash) return;
+              
+              location.search = "?" + stringifyQueryString(parseQueryString(location.search.slice(1))
+                .tap(function(queryParamsMap) { queryParamsMap["q"] = newSearchText }
+              ))
+              
+            }, false)
+          })() } catch(err) {  }
+
           //# global search link + hotkey
           if(1) try { (function() {
             var labelsDiv = document.querySelector("div[class^=index-additions]");
