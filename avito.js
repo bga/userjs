@@ -16,7 +16,7 @@
   if(location.pathname.match(/^(\/additem|\/items|\/profile)/) != null) {
     //# inside account - do nothing
   }
-  else if(location.hash != "") {
+  else if(0 && location.hash != "") {
     //# reload page with original js to allow user see phone or write message to seller
     window.addEventListener("load", function() {
       switch(location.hash) {
