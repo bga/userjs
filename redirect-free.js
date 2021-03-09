@@ -21,6 +21,11 @@
       var qso = Bga.parseQueryString(match[1])
       return qso["url"] || qso["q"]; 
     }],
+    //# { "https://m.vk.com/away.php?to=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DKbQFboIEMcI&post=6666666_66" }
+    [/^(?:https?:\/\/)?(?:www\.)?(?:m\.)?vk\.(?:com)\/away.php\?([\s\S]*)$/, function(match) { 
+      var qso = parseQueryString(match[1])
+      return qso["to"]; 
+    }],
     [/^(?:http:\/\/)?forum\.funkysouls\.com\/go\.php\?([^&]*)/, function(match) { 
       return decodeURIComponent(match[1]); 
     }]
