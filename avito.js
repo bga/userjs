@@ -73,11 +73,26 @@
           catch(e) {
 
           }
+          
+          //# delete ad items 
+          if(1) try { (function() {
+            document.querySelectorAll("a[data-marker=item-link]").each(function(v) {
+              v.up("js-catalog-item-enum").remove()
+            })
+          })() } catch(err)  {  }
 
+          //# delete ad items 
+          if(1) try { (function() {
+            document.querySelectorAll("div[class*=iva-item-description-]").each(function(v) {
+              v.up("js-catalog-item-enum").remove()
+            })
+          })() } catch(err)  {  }
+
+          
           //# fix search form
           if(1) try { (function() {
             var hashText = function(s) {
-              return s.trim().toUpperCsse().replace(/\s+/g, " ")
+              return s.trim().toUpperCase().replace(/\s+/g, " ")
             }
             
             var searchInput = document.getElementById("search");
@@ -159,7 +174,7 @@
             //# show all images in products listing
             ;(document.getElementsByClassName("catalog")[0] || document.getElementsByClassName("catalog_table")[0] || document.getElementsByClassName("snippet-list")[0]  || skip()).getElementsByTagName("noscript").each(function(noscript) {
               // log(noscript.innerText)
-              noscript.replace(de("".concat(noscript.innerText)))
+              // noscript.replace(de("".concat(noscript.innerText)))
             })
           }
           catch(err) {
