@@ -46,6 +46,13 @@ if(location.hash == "#comments") {
       
       var main = function(e) {
         
+        //# shrink ad img size
+        if(1) (function() {
+          document.querySelectorAll("img[src='/adv/qrator-box.png']").each(function(v) {
+            v.style.width = "200px"
+          })
+        })()
+        
         //# Alt+Left/Right jumps by comments, not by topics
         if(1) {
           var prevHref = xPath("//a[@class='page-number' and position() = 1]").each(function(v) {
