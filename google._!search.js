@@ -94,7 +94,12 @@ opera.addEventListener('BeforeScript', function(js) {
           }
           setAccessKey("All", "A", location.toString().replace(/([?&])tbm=[^&]*(?=&)/g, "$1"))
           log(location.toString().replace(/([?&])tbm=[^&]*(?=&)/g, "$1tbm=isch"))
-          setAccessKey("Images", "I", ((location.toString().match(/([?&])tbm=[^&]*(?=&)/g)) ? location.toString().replace(/([?&])tbm=[^&]*(?=&)/g, "$1tbm=isch") : location.toString() + "&tbm=isch"))
+          //# redirect to [startpage.com]
+          setAccessKey("Images", "I", "".concat("https://startpage.com/sp/search?", stringifyQueryString({
+            "cat": "pics", 
+            "query": locationQueryParams["q"], 
+          })))
+          // setAccessKey("Images", "I", ((location.toString().match(/([?&])tbm=[^&]*(?=&)/g)) ? location.toString().replace(/([?&])tbm=[^&]*(?=&)/g, "$1tbm=isch") : location.toString() + "&tbm=isch"))
           setAccessKey("Videos", "V", ((location.toString().match(/([?&])tbm=[^&]*(?=&)/g)) ? location.toString().replace(/([?&])tbm=[^&]*(?=&)/g, "$1tbm=vid") : location.toString() + "&tbm=vid"))
         })()
 
