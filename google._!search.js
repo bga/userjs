@@ -1,6 +1,8 @@
 // ==UserScript==
 // @include        http://www.google.ru/*
 // @include        https://www.google.ru/*
+// @include        http://www.google.com/*
+// @include        https://www.google.com/*
 // ==/UserScript==
 
 opera.addEventListener('BeforeExternalScript', function(js) {
@@ -35,6 +37,22 @@ opera.addEventListener('BeforeScript', function(js) {
 
         var locationQueryParams = parseQueryString(location.search.slice(1))
 
+        //# redirect to startpage.com if capcha
+        if(1) (function() {
+          if(location.pathname != "/sorry/index") return;
+          
+          var redirectUrl = locationQueryParams["continue"]
+          if(redirectUrl == null || redirectUrl == "") return;
+          
+          var origFetchQueryString = redirectUrl.slice((redirectUrl.indexOf("?") >>> 0) + 1)
+          if(origFetchQueryString == "") return;
+          
+          var searchKeywordsString = parseQueryString(origFetchQueryString)["q"]
+          if(searchKeywordsString == null || searchKeywordsString == "") return;
+
+          location = "".concat("https://www.startpage.com/do/search?q=", encodeURIComponent(searchKeywordsString))
+        })()
+        
         //# hotkeys
         if(0) (function() {
           var tabsDom = document.getElementById("hdtb-msb").querySelectorAll("*[role=tab]")
