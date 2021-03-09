@@ -4,4 +4,4 @@
 // @description    simple redirect
 // ==/UserScript==
 
-location.host = "mobile.twitter.com"
+location.host = "nitter.tedomum.net"
