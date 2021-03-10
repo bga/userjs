@@ -24,7 +24,7 @@ opera.addEventListener('BeforeScript', function(js) {
   
   //# without product path modification we can not show product' description
   if(newLocation.match(/\/item\/\d+.html$/)) (function() {
-    if(1) newLocation = newLocation.replace("/item/", "/i/");
+    if(1) newLocation = newLocation.replace("/item/", "/i/").replace(/\?.*$/, "");
   })()
   
   location.replace(newLocation);
