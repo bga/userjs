@@ -50,7 +50,8 @@ opera.addEventListener('BeforeScript', function(js) {
           var searchKeywordsString = parseQueryString(origFetchQueryString)["q"]
           if(searchKeywordsString == null || searchKeywordsString == "") return;
 
-          location = "".concat("https://www.startpage.com/do/search?q=", encodeURIComponent(searchKeywordsString))
+          //# redirect to startpage front page because redirecting directly to search result issues captcha check
+          location = "".concat("https://www.startpage.com/?q=", encodeURIComponent(searchKeywordsString))
         })()
         
         //# hotkeys
@@ -95,7 +96,8 @@ opera.addEventListener('BeforeScript', function(js) {
           setAccessKey("All", "A", location.toString().replace(/([?&])tbm=[^&]*(?=&)/g, "$1"))
           log(location.toString().replace(/([?&])tbm=[^&]*(?=&)/g, "$1tbm=isch"))
           //# redirect to [startpage.com]
-          setAccessKey("Images", "I", "".concat("https://startpage.com/sp/search?", stringifyQueryString({
+          //# redirect to startpage front page because redirecting directly to search result issues captcha check
+          setAccessKey("Images", "I", "".concat("https://startpage.com/?", stringifyQueryString({
             "cat": "pics", 
             "query": locationQueryParams["q"], 
           })))
