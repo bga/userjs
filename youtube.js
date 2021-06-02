@@ -19,7 +19,7 @@ else if(0 && location.search.match(/(^|&|\?)nofeather=True(&|$)/) == null) {
 }
 
 //# { disable_polymer=1 } for old UI
-if(location.search.match(/(^|&|\?)disable_polymer=1(&|$)/) == null) {
+if(0 && location.search.match(/(^|&|\?)disable_polymer=1(&|$)/) == null) {
   location.replace(location + ((location.search == "") ? "?" : "&") + "disable_polymer=1")
 }
 else {
