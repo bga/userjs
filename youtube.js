@@ -407,7 +407,12 @@ function decipher(sig) {
 }
 ap({
     params: {
-        "u": "https://www.youtube.com/get_video_info?video_id=" + vid + "&asv=3&el=detailpage&hl=en_US&sts=16230&html5=1",
+        // "u": "https://www.youtube.com/get_video_info?video_id=" + vid + "&asv=3&el=detailpage&hl=en_US&sts=16230&html5=1&el=embedded",
+        "u": ("https://www.youtube.com/get_video_info?" + stringifyQueryString({
+          "video_id": vid, 
+          "html5": 1, 
+          "eurl": "https://youtube.googleapis.com/v/" + vid 
+        })), 
         "ua": ua
     },
     "dispose": 1,
