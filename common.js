@@ -6,8 +6,17 @@
 !(function(global) {
   var $null = null
 
-  if(window.Bga == null) {
-    window.Bga = {}
+  var document = global.document || {  }
+  var opera = global.opera || {
+    postError: function() {
+      console.log.apply(console, arguments)
+    }
+  }
+
+  var Bga = {  }
+
+  if(global.Bga == null) {
+    global.Bga = Bga
   }
 
   Bga.xpath = Bga.xPath = function(expr, root) {
@@ -91,10 +100,10 @@
 
   Bga.logNull = function() {  }
   Bga.logRaw = function() {
-    if(window.opera) {
+    if(global.opera) {
       opera.postError([].join.call(arguments, " "))
     }
-    else if(window.console) {
+    else if(global.console) {
       console.log([].join.call(arguments, " "))
     }
   }
