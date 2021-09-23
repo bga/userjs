@@ -245,6 +245,14 @@
       this.insertBefore(v, this.firstChild)
       return this
     }
+    Node.prototype.prependSibling = function(v) {
+      this.parentNode.insertBefore(v, this)
+      return this
+    }
+    Node.prototype.appendSibling = function(v) {
+      this.parentNode.insertBefore(v, this.nextSibling)
+      return this
+    }
 
     if(0) {
       img.wrap(de("".concat('<a href="', img.src, '" ><content /></a>')))
