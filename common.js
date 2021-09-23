@@ -142,6 +142,31 @@
       })
       return $r
     }
+    if(String.prototype.repeat == null) String.prototype.repeat = function(n) {
+      if(typeof(n) != "number") {
+        throw new TypeError("repeat count must be number");
+      };
+      if(Math.floor(n) != n || n == +Infinity) {
+        throw new RangeError("repeat count must be integer");
+      };
+      if(n < 0) {
+        throw new RangeError("repeat count must be non-negative");
+      };
+
+      var degree = String(this);
+      var out = "";
+      for(;;) {
+        if(n == 0) {
+          break;
+        };
+        if(n & 1) {
+          out += degree;
+        };
+        n >>= 1;
+        degree += degree;
+      }
+      return out;
+    }
 
     Array.prototype.flat = function(depth) { var p = this
       depth == null && (depth = 1)
