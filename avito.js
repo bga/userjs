@@ -151,7 +151,7 @@
 
           //# click on interactive buttons reload page with vendor scripts and than we programmatically click desired button
           //# dont know but without that code button onclick does not work
-          if(document.getElementsByClassName("item-phone-button")[0] != null) {
+          if(0 && document.getElementsByClassName("item-phone-button")[0] != null) {
             document.getElementsByClassName("item-phone-button")[0].parentNode.innerHTML="Ololo"
 
             document.getElementsByClassName("item-phone-button")[0].addEventListener("click", function() {
