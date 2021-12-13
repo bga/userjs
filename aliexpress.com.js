@@ -74,6 +74,28 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
 
       onDOMReady(function() {
 
+        //# show description
+        if(1) (function() {
+          fetch("".concat("https://www.aliexpress.com/i/api/fetch?productId=", encodeURIComponent(productId), "&keys=[%22topDivProductJSON%22,%22user_code%22,%22houyiCouponData%22,%22itemDetailView%22,%22houyiItemData%22,%22recommendListView%22,%22productToBrandView%22]"), {
+            headersMap: {
+              'Content-Type': 'application/json', 
+              'Accept': 'application/json', 
+            }, 
+          }).then(function(response) {
+            if(response.ok) {
+              document.getElementsByClassName("product-detail")[0].appendSibling(de("<div />").tap(function(v) {
+                try {
+                  v.innerHTML = response.body.json().data.pageInfo.itemDetailView.desc
+                }
+                catch(err) {
+                  v.innerText = response.body.text()
+                }
+              }))
+            };
+          })
+        })()
+
+
       //# another redirect
       if(1) (function() {
         var paramMap = parseQueryString(location.search.slice(1))
