@@ -15,9 +15,14 @@ opera.addEventListener('BeforeScript', function(js) {
   js.preventDefault()
 }, false)
 
+var productId = (function() {
+  var match = location.pathname.match(/\/item\/(\d+).html$/i) || location.pathname.match(/\/i\/(\d+).html$/i) || location.pathname.match(/\/items\/reviews\-(\d+)p\d+\.html$/i)
+  return (match || [])[1]
+})()
+
 //# without product path modification we can not show product' description
-if(location.pathname.match(/\/item\/\d+.html$/)) (function() {
-  if(1) location.pathname = location.pathname.replace("/item/", "/i/").replace(/\?.*$/, "")
+if((null == location.pathname.match(/\/items\/reviews\-(\d+)p\d+\.html$/i))) (function() {
+  if(1) location.replace("".concat("/items/reviews-", productId, "p1.html"))
 })()
 
 
@@ -78,7 +83,6 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
           location.replace(return_url.replace("/item/", "/i/"))
         } while(0);
       })()
-
       //# adds "Short Url" garbage free link near "Show in english"
         var multiLanguageSwitch = document.getElementsByClassName("multi-language-switch")[0] || document.getElementsByClassName("product-name")[0]
         if(multiLanguageSwitch != null) {
