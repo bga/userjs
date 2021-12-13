@@ -96,16 +96,17 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
         })()
 
 
-      //# another redirect
-      if(1) (function() {
-        var paramMap = parseQueryString(location.search.slice(1))
-        do {
-          var return_url = paramMap["return_url"]; if(return_url == null) break
-          if(null == return_url.match(/\/item\//)) break
-          location.replace(return_url.replace("/item/", "/i/"))
-        } while(0);
-      })()
-      //# adds "Short Url" garbage free link near "Show in english"
+        //# another redirect
+        if(1) (function() {
+          var paramMap = parseQueryString(location.search.slice(1))
+          do {
+            var return_url = paramMap["return_url"]; if(return_url == null) break
+            if(null == return_url.match(/\/item\//)) break
+            location.replace(return_url.replace("/item/", "/i/"))
+          } while(0);
+        })()
+        
+        //# adds "Short Url" garbage free link near "Show in english"
         var multiLanguageSwitch = document.getElementsByClassName("multi-language-switch")[0] || document.getElementsByClassName("product-name")[0]
         if(multiLanguageSwitch != null) {
           var shortUrl = "".concat(location.protocol, "//", [].concat(["www"], location.host.split(".").slice(1)).join("."), location.pathname)
