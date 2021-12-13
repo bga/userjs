@@ -82,13 +82,12 @@
           })() } catch(err)  {  }
 
           //# delete ad items 
-          if(1) try { (function() {
+          if(0) try { (function() {
             document.querySelectorAll("div[class*=iva-item-description-]").each(function(v) {
               v.up("js-catalog-item-enum").remove()
             })
           })() } catch(err)  {  }
 
-          
           //# fix search form
           if(1) try { (function() {
             var hashText = function(s) {
@@ -194,7 +193,7 @@
           })
 
           //# show 1st image of slider photos
-          if(1) document.querySelectorAll("ul[class^=photo-slider-list-]").each(function(v) {
+          if(0) document.querySelectorAll("ul[class^=photo-slider-list-]").each(function(v) {
             var firstImageLi = v.children[0]
             //# { "slider-image/image-https://72.img.avito.st/208x156/DDDDDDDDDD.jpg" }
             var photoUrl = (firstImageLi.getAttribute("data-marker") || "").replace("slider-image/image-https:", "https:")
