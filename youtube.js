@@ -216,16 +216,16 @@ opera.addEventListener('BeforeScript', function(js) {
           player.innerHTML = "<div /><div />"
           
           document.head.appendChild(de("".concat("<style>#player-api a { display: block; font-size: 12pt; margin: 2px; text-transform: lowercase; }</style>")))
-          player.firstChild.appendChild(de("<a href=# accesskey=I title='invidio.us mp4 480p'>invidio.us mp4 480p</a>")).addEventListener("click", function(ev) {
-            showMediaPlayer("".concat("https://invidio.us/latest_version?id=", video_id, "&itag=18"))
-            ev.preventDefault()
-            return false
-          }, false)
-          player.firstChild.appendChild(de("<a href=# accesskey=J title='invidio.us mp4 720p'>invidio.us mp4 720p</a>")).addEventListener("click", function(ev) {
-            showMediaPlayer("".concat("https://invidio.us/latest_version?id=", video_id, "&itag=22"))
-            ev.preventDefault()
-            return false
-          }, false)
+          var appendUrl = function(accesskey, name, url) {
+            player.firstChild.appendChild(de("".concat("<a href='", url, "' accesskey='", accesskey, "' title='", name, "'>", name, "</a>"))).addEventListener("click", function(ev) {
+              showMediaPlayer(url, 640, 480)
+              ev.preventDefault()
+              return false
+            }, false)
+          }
+          var invidiousHost = "https://inv.riverside.rocks/"
+          appendUrl("I", "invidio.us mp4 480p", "".concat(invidiousHost, "latest_version?id=", video_id, "&itag=18"));
+          appendUrl("J", "invidio.us mp4 720p", "".concat(invidiousHost, "latest_version?id=", video_id, "&itag=22"));
 
           var di = function(options) {
             //log(options.title + "!")
