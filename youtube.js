@@ -418,6 +418,7 @@ ap({
     "dispose": 1,
     "callback": function(da) {
         if(0) log("111 " + JSON.stringify(Bga.parseQueryString(da.body), null, "  "))
+        if(da == null) return log("xhr null");
         var streamingData = JSON.parse(Bga.parseQueryString(da.body).player_response).streamingData 
         var formats = streamingData.formats.concat(streamingData.adaptiveFormats)
         formats.each(function(format) {
