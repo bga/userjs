@@ -114,7 +114,7 @@
 
           //# global search link + hotkey
           if(1) try { (function() {
-            var labelsDiv = document.querySelector("div[class^=index-additions]");
+            var labelsDiv = document.querySelector("div[class^=form-part-additions-] > div[class^=filters-root-]");
             var labels = labelsDiv.getElementsByTagName("LABEL");
             var lastLabel = labels[labels.length - 1];
             var globalSearchUrl = "".concat("/rossiya", location.search)
