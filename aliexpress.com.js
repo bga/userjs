@@ -54,7 +54,7 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
 
 !(function(global) {
   var waitCommon = function(fn) {
-    if(global.Bga && global.he) {
+    if(global.Bga) {
       fn()
     }
     else {
@@ -155,10 +155,10 @@ if(location.pathname.match(/\/wholesale$/) || location.pathname.match(/\/w\//)) 
             }
             else {
               var escapeAttr = function(t) {
-                return he.escape("" + t)
+                return escapeHTML("" + t)
               }
               var escapeText = function(t) {
-                return he.escape("" + t)
+                return escapeHTML("" + t)
               }
 
               document.getElementById("root").innerHTML = ""
