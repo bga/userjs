@@ -436,6 +436,12 @@
         }
       }
     }
+    Node.prototype.getElementByClassPrefix = function(classPrefix) { var thi$ = this
+      return [].filter.apply([thi$.querySelector("".concat("*[class*=", classPrefix, "]"))], [function(v) { return v.hasClassPrefix(classPrefix) }])[0]
+    }
+    Node.prototype.getElementsByClassPrefix = function(classPrefix) { var thi$ = this
+      return [].filter.apply(thi$.querySelectorAll("".concat("*[class*=", classPrefix, "]")), [function(v) { return v.hasClassPrefix(classPrefix) }])
+    }
     Node.prototype.up = function(className) { var thi$ = this
       var predicate = null; {
         if(Object(className) instanceof Function) {
