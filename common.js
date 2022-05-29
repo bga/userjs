@@ -402,6 +402,9 @@
     Node.prototype.hasClass = function(className) { var thi$ = this
       return (" " + thi$.className + " ").indexOf(" " + className + " ") !== -1
     }
+    Node.prototype.hasClassPrefix = function(className) { var thi$ = this
+      return thi$.className.hasListPrefix(className, " ")
+    }
     Node.prototype.addClass = function(className) { var thi$ = this
       if(!thi$.hasClass(className)) {
         if(thi$.className.length > 0) {
@@ -416,6 +419,9 @@
       if(thi$.hasClass(className)) {
         thi$.className = (" " + thi$.className + " ").replace(" " + className + " ", " ")
       }
+    }
+    Node.prototype.delClassPrefix = function(className) { var thi$ = this
+      thi$.className = thi$.className.removeListPrefix(className, " ")
     }
     Node.prototype.toggleClass = function(className) { var thi$ = this
       if(thi$.hasClass(className)) {
