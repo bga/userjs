@@ -139,6 +139,124 @@
       if (start == null) { start = 0; }
       return this.indexOf(search, start) !== -1;
     };
+
+    if(0) {
+      Bga.assert("a--b--c----d".hasListItem("a", "--"))  
+      Bga.assert("aa--b--c----d".hasListItem("aa", "--"))  
+      Bga.assert("aa-b-c--d".hasListItem("aa", "-"))  
+      Bga.assert("a--b--c----d".hasListItem("b", "--"))  
+      Bga.assert("a--b--c----d".hasListItem("c", "--"))  
+      Bga.assert("a--b--c----d".hasListItem("d", "--"))  
+      Bga.assert("a--b--c----d".hasListItem("f", "--") == false)  
+    };
+    String.prototype.hasListItem = function(prefix, sep) { var thi$ = this;
+      return (sep + thi$ + sep).indexOf(sep + prefix + sep) !== -1
+    }
+    
+    if(0) {
+      Bga.assert.eq("a--b--c----d".removeListItem("a", "--"),  "b--c----d")  
+      Bga.assert.eq("a-b-c--d".removeListItem("a", "-"),  "b-c--d")  
+      Bga.assert.eq("a-b-c--d".removeListItem("b", "-"),  "a-c--d")  
+      Bga.assert.eq("a-b-c--d".removeListItem("c", "-"),  "a-b--d")  
+      Bga.assert.eq("a-b-c--d".removeListItem("d", "-"),  "a-b-c-")  
+      Bga.assert.eq("a-b-c--d".removeListItem("", "-"),   "a-b-c-d")  
+      Bga.assert.eq("-a-b-c--d".removeListItem("", "-"),   "a-b-c--d")  
+      Bga.assert.eq("a-b-c-d-".removeListItem("", "-"),   "a-b-c-d")  
+      Bga.assert.eq("".removeListItem("a", "-"),   "")  
+      Bga.assert.eq("a".removeListItem("a", "-"),   "")  
+    };
+    String.prototype.removeListItem = function(prefix, sep) { var thi$ = this;
+      return (sep + this + sep).replace(sep + prefix + sep, sep).slice(sep.length, -sep.length)
+    }
+    
+    if(0) {
+      Bga.assert("aa--bb--cc----dd".hasListPrefix("a", "--"))  
+      Bga.assert("aa--bb--cc----dd".hasListPrefix("aa", "--"))  
+      Bga.assert("aaa-bb-cc--dd".hasListPrefix("aa", "-"))  
+      Bga.assert("aa--bb--cc----dd".hasListPrefix("b", "--"))  
+      Bga.assert("aa--bb--cc----dd".hasListPrefix("c", "--"))  
+      Bga.assert("aa--bb--cc----dd".hasListPrefix("d", "--"))  
+      Bga.assert("aa--bb--cc----dd".hasListPrefix("f", "--") == false)  
+    };
+    String.prototype.hasListPrefix = function(prefix, sep) { var thi$ = this;
+      return (sep + thi$).indexOf(sep + prefix) !== -1
+    }
+
+    if(0) {
+      Bga.assert("aa--bb--cc----dd".hasListSuffix("a", "--"))  
+      Bga.assert("aa--bb--cc----dd".hasListSuffix("aa", "--"))  
+      Bga.assert("aaa-bb-cc--dd".hasListSuffix("aa", "-"))  
+      Bga.assert("aa--bb--cc----dd".hasListSuffix("b", "--"))  
+      Bga.assert("aa--bb--cc----dd".hasListSuffix("c", "--"))  
+      Bga.assert("aa--bb--cc----dd".hasListSuffix("d", "--"))  
+      Bga.assert("aa--bb--cc----dd".hasListSuffix("f", "--") == false)  
+    };
+    String.prototype.hasListSuffix = function(prefix, sep) { var thi$ = this;
+      return (thi$ + sep).indexOf(prefix + sep) !== -1
+    }
+    
+    if(0) {
+      Bga.assert.eq("aa--bb--cc----dd".removeListPrefix("a", "--"),  "bb--cc----dd")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListPrefix("f", "-"),  "aa-bb-cc--dd")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListPrefix("a", "-"),  "bb-cc--dd")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListPrefix("b", "-"),  "aa-cc--dd")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListPrefix("c", "-"),  "aa-bb--dd")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListPrefix("d", "-"),  "aa-bb-cc-")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListPrefix("", "-"),   "aa-bb-cc-dd")  
+      Bga.assert.eq("-aa-bb-cc--dd".removeListPrefix("", "-"),  "aa-bb-cc--dd")  
+      Bga.assert.eq("aa-bb-cc-dd-".removeListPrefix("", "-"),  "aa-bb-cc-dd")  
+      Bga.assert.eq("".removeListPrefix("a", "-"),   "")  
+    };
+    String.prototype.removeListPrefix = function(prefix, sep) { var thi$ = this;
+      if(prefix.length == 0) {
+        return (sep + thi$ + sep).replace(sep + sep, sep).slice(sep.length, -sep.length)
+      }
+      else {
+        var sepPrefix = sep + prefix
+        var sepStrSep = sep + thi$ + sep
+        var p = sepStrSep.indexOf(sepPrefix)
+        if(p == -1) {
+          return this
+        }
+        else {
+          var pEnd = sepStrSep.indexOf(sep, p + sepPrefix.length)
+          sepStrSep = sepStrSep.slice(0, p) + sepStrSep.slice(pEnd)
+          return sepStrSep.slice(sep.length, -sep.length) //# cut extra seps
+        }
+      }
+    }
+
+    if(0) {
+      Bga.assert.eq("aa--bb--cc----dd".removeListSuffix("a", "--"),  "bb--cc----dd")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListSuffix("f", "-"),  "aa-bb-cc--dd")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListSuffix("a", "-"),  "bb-cc--dd")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListSuffix("b", "-"),  "aa-cc--dd")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListSuffix("c", "-"),  "aa-bb--dd")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListSuffix("d", "-"),  "aa-bb-cc-")  
+      Bga.assert.eq("aa-bb-cc--dd".removeListSuffix("", "-"),   "aa-bb-cc-dd")  
+      Bga.assert.eq("-aa-bb-cc--dd".removeListSuffix("", "-"),  "aa-bb-cc--dd")  
+      Bga.assert.eq("aa-bb-cc-dd-".removeListSuffix("", "-"),  "aa-bb-cc-dd")  
+      Bga.assert.eq("".removeListSuffix("a", "-"),   "")  
+    };
+    String.prototype.removeListSuffix = function(prefix, sep) { var thi$ = this;
+      if(prefix.length == 0) {
+        return (sep + thi$ + sep).replace(sep + sep, sep).slice(sep.length, -sep.length)
+      }
+      else {
+        var prefixSep = prefix + sep
+        var sepStrSep = sep + thi$ + sep
+        var p = sepStrSep.indexOf(prefixSep)
+        if(p == -1) {
+          return this
+        }
+        else {
+          var pStart = sepStrSep.lastIndexOf(sep, p)
+          sepStrSep = sepStrSep.slice(0, pStart + sep.length) + sepStrSep.slice(p + prefixSep.length)
+          return sepStrSep.slice(sep.length, -sep.length) //# cut extra seps
+        }
+      }
+    }
+
     String.prototype.matchAll = function(re) { var p = this
       re.global != true && (re = RegExp(re.source, "g"))
 
