@@ -137,6 +137,37 @@
 
           }
 
+          //# simplified gallery v2
+          if(1) try { (function() {  
+            var maxImgSize = "600px"
+            
+            var parseDims = function(s) {
+              return s.split("x").map(function(dim) { return parseInt(dim) })
+            }
+            var calcDimsArea = function(dims) {
+              return dims[0] * dims[1]
+            }
+            var getMaxKey = function(v) {
+              var keys = Object.keys(v).map(function(k) { return { k: k, area: calcDimsArea(parseDims(k)) } })
+              return keys.sort(function(a, b) { return b.area - a.area })[0].k
+            }
+            
+            var json = JSON.parse(document.querySelector("*[class*=js-ssr-]").getAttribute("data-props"))
+            var imgUrls = json.galleryInfo.imageUrls.map(function(v) { return v[getMaxKey(v)] })
+          
+            var newGallery = document.createDocumentFragment()
+            imgUrls.each(function(url) {
+              newGallery.appendChild(de("".concat("<a width=", maxImgSize, " href='", url, "'><img src='", url, "'></a>")))
+            })
+
+            var galleryDom = document.querySelector("*[class*=gallery-block-new-style-container-]") 
+            galleryDom.innerHTML = ""
+            galleryDom.appendChild(newGallery)
+          })() }
+          catch(err) {
+            
+          }
+
           //# fix pagination
           if(1) try {
             var newSearch = stringifyQueryString(parseQueryString(location.search.slice(1)).tap(function(map) {
