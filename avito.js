@@ -153,7 +153,7 @@
             }
             
             var json = JSON.parse(document.querySelector("*[class*=js-ssr-]").getAttribute("data-props"))
-            var imgUrls = json.galleryInfo.imageUrls.map(function(v) { return v[getMaxKey(v)] })
+            var imgUrls = json.dto.galleryInfo.imageUrls.map(function(v) { return v[getMaxKey(v)] })
           
             var newGallery = document.createDocumentFragment()
             imgUrls.each(function(url) {
