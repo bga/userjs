@@ -152,7 +152,7 @@
               return keys.sort(function(a, b) { return b.area - a.area })[0].k
             }
             
-            var json = JSON.parse(document.querySelector("*[class*=js-ssr-]").getAttribute("data-props"))
+            var json = JSON.parse(document.getElementByClassPrefix("js-ssr-").getAttribute("data-props"))
             var imgUrls = json.dto.galleryInfo.imageUrls.map(function(v) { return v[getMaxKey(v)] })
           
             var newGallery = document.createDocumentFragment()
@@ -160,7 +160,7 @@
               newGallery.appendChild(de("".concat("<a width=", maxImgSize, " href='", url, "'><img src='", url, "'></a>")))
             })
 
-            var galleryDom = document.querySelector("*[class*=gallery-block-new-style-container-]") 
+            var galleryDom = document.getElementByClassPrefix("gallery-block-new-style-container-") 
             galleryDom.innerHTML = ""
             galleryDom.appendChild(newGallery)
           })() }
