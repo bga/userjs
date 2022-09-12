@@ -835,6 +835,37 @@
     })
   }
 
+  if(0) {
+    with(Bga) {
+      assert.neq(matchCStringEnd('"123"', 0), -1) 
+      assert.eq(matchCStringEnd('"123', 0), -1) 
+      assert.eq(matchCStringEnd('"123\\"', 0), -1) 
+      assert.neq(matchCStringEnd('"123\\\\"', 0), -1) 
+      assert.eq(matchCStringEnd('"123\\\\\\"', 0), -1) 
+    }
+  };
+  Bga.matchCStringEnd = function(s, p) {
+    var quote = s[p];
+    for(;;) {
+      p = s.indexOf(quote, p + 1)
+      if(p < 0) {
+        break;
+      };
+      
+      var p2 = p; 
+      do {  
+        p2 -= 1;
+      }
+      while(s[p2] == "\\");
+      
+      if((p - p2) % 2 == 1) {
+        p += 1;
+        break;
+      };
+    }
+    return p;
+  }
+
   if(0) Bga.example(function() {
     with(Bga) {
       assert.eq(unescapeCString("\"a_\\n_b\""),  "a_\n_b")
