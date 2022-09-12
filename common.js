@@ -605,8 +605,28 @@
     }
   }
   Bga.assert.eq = function(expr, expect) {
-    if(expr != expect) {
+    if(!(expr == expect)) {
       throw new Error("".concat("{ ", expr,  " } != { ", expect, " }"))
+    }
+  }
+  Bga.assert.neq = function(expr, expect) {
+    if(!(expr != expect)) {
+      throw new Error("".concat("{ ", expr,  " } == { ", expect, " }"))
+    }
+  }
+  Bga.assert.lt = function(expr, expect) {
+    if(!(expr < expect)) {
+      throw new Error("".concat("{ ", expr,  " } >= { ", expect, " }"))
+    }
+  }
+  Bga.assert.lte = function(expr, expect) {
+    if(!(expr <= expect)) {
+      throw new Error("".concat("{ ", expr,  " } > { ", expect, " }"))
+    }
+  }
+  Bga.assert.hasMask = function(expr, expect) {
+    if(!((expr & expect) == expect)) {
+      throw new Error("".concat("{ ", expr.toString(2),  " } !hasMask { ", expect.toString(2), " }"))
     }
   }
 
