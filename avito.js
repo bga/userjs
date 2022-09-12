@@ -152,9 +152,24 @@
               return keys.sort(function(a, b) { return b.area - a.area })[0].k
             }
             
-            var json = JSON.parse(document.getElementByClassPrefix("js-ssr-").getAttribute("data-props"))
-            var imgUrls = json.dto.galleryInfo.imageUrls.map(function(v) { return v[getMaxKey(v)] })
-          
+            var jsonMarker = "window.__initialData__"
+            var jsonText = null;
+            ;([].slice.call(document.getElementsByTagName("SCRIPT")).forEach(function(v) { 
+                var t = v.innerText; 
+                var p = t.indexOf(jsonMarker)
+                if(p == -1) return; 
+
+                var p2 = t.indexOf('"', p + jsonMarker.length);
+                var p3 = matchCStringEnd(t, p2)
+                
+                // jsonText = unescapeCString(js.element.innerText.slice(p2, p3))
+                //# faster alternative for very big strings
+                jsonText = decodeURIComponent(Function("return " + js.element.innerText.slice(p2, p3))())
+              }
+            )
+            var json = JSON.parse(jsonText)
+            var imgUrls = json[Object.keys(json).filter(function(k) { return k.indexOf("item-view") != -1 })].buyerItem.galleryInfo.media.map(function(v) { return v.urls[getMaxKey(v.urls)] })
+            
             var newGallery = document.createDocumentFragment()
             imgUrls.each(function(url) {
               newGallery.appendChild(de("".concat("<a width=", maxImgSize, " href='", url, "'><img src='", url, "'></a>")))
@@ -165,7 +180,6 @@
             galleryDom.appendChild(newGallery)
           })() }
           catch(err) {
-            
           }
 
           //# fix pagination
