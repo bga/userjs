@@ -66,6 +66,12 @@
 
         var main = function() {
 
+          //# unhide page
+          if(1) try { (function() { 
+            document.getElementById("S:0").removeAttribute("hidden");
+            document.getElementById("S:1").removeAttribute("hidden");
+          }) } catch(err) {  }
+          
           //# remove new js custom select box
           try {
             document.getElementsByClassName("search-form__change-location").each(function(v) { v.remove() })
