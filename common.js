@@ -508,6 +508,13 @@
       thi$.parentNode.removeChild(thi$)
       return thi$
     }
+    Node.prototype.moveChildNodesToFragment = function() { var thi$ = this
+      var df = document.createDocumentFragment()
+      while(thi$.firstChild != null) {
+        df.appendChild(thi$.firstChild)
+      }
+      return df
+    }
 
     var processDomOrDe = function(domOrDe, f) {
       if(domOrDe.nodeType != Node.DOCUMENT_FRAGMENT_NODE) {
